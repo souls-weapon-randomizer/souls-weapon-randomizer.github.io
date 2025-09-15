@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800;900&family=Cinzel:wght@400;500;600;700&family=UnifrakturMaguntia&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-element-light;
+  }
+  
+  body {
+    @apply bg-background text-text-main font-sans antialiased;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    min-height: 100vh;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .glass-effect {
+    @apply bg-element/80 backdrop-blur-md border border-element-light/50;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:scale-105 hover:shadow-glow;
+  }
+  
+  .button-primary {
+    @apply bg-gradient-to-r from-accent to-accent-hover text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-glow transition-all duration-300 transform hover:scale-105;
+  }
+  
+  .button-secondary {
+    @apply bg-element hover:bg-element-hover text-text-main font-semibold py-2 px-4 rounded-lg border border-element-light transition-all duration-300 hover:border-accent;
+  }
+  
+  .input-field {
+    @apply bg-element-light border border-element-light rounded-lg px-4 py-2 text-text-main placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent;
+  }
+  
+  .glow-text {
+    @apply text-accent drop-shadow-[0_0_8px_rgba(251,191,36,0.5)];
+  }
+}
