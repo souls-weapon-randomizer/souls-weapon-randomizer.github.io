@@ -3,7 +3,9 @@ import Preferences from './components/Preferences';
 import Bosses from './components/Bosses';
 import Roulette from './components/Roulette';
 import Blacklist from './components/Blacklist';
-import Notification from './components/Notification';
+import notificationManager, { NOTIFICATION_TYPES } from './components/NotificationManager';
+import { useLocalStorage } from './hooks/useLocalStorage';
+import { STORAGE_KEYS, DEFAULT_VALUES } from './constants/storage';
 import { allWeapons } from './data/weapons';
 
 // Clean background without particles
@@ -24,42 +26,22 @@ const BackgroundPattern = () => (
 
 
 function App() {
-    // Load session data from localStorage on component mount
-    const [preferences, setPreferences] = useState(() => {
-        const saved = localStorage.getItem('dsr-randomizer-preferences');
-        return saved ? JSON.parse(saved) : null;
-    });
-    const [showPreferences, setShowPreferences] = useState(() => {
-        const saved = localStorage.getItem('dsr-randomizer-preferences');
-        return !saved; // Show preferences only if no saved data
-    });
-    const [defeatedBosses, setDefeatedBosses] = useState(() => {
-        const saved = localStorage.getItem('dsr-randomizer-defeated-bosses');
-        return saved ? JSON.parse(saved) : [];
-    });
-    const [blacklist, setBlacklist] = useState(() => {
-        const saved = localStorage.getItem('dsr-randomizer-blacklist');
-        return saved ? JSON.parse(saved) : [];
-    });
+    // Use localStorage hook for session data
+    const [preferences, setPreferences] = useLocalStorage(STORAGE_KEYS.PREFERENCES, DEFAULT_VALUES.PREFERENCES);
+    const [defeatedBosses, setDefeatedBosses] = useLocalStorage(STORAGE_KEYS.DEFEATED_BOSSES, DEFAULT_VALUES.DEFEATED_BOSSES);
+    const [blacklist, setBlacklist] = useLocalStorage(STORAGE_KEYS.BLACKLIST, DEFAULT_VALUES.BLACKLIST);
+    
+    // Local state
+    const [showPreferences, setShowPreferences] = useState(!preferences);
     const [randomizedWeapon, setRandomizedWeapon] = useState(null);
-    const [notifications, setNotifications] = useState([]);
     const [activeWeapons, setActiveWeapons] = useState([]);
     const [showNewGameConfirm, setShowNewGameConfirm] = useState(false);
+    
+    // Use new notification system
+    const showNotification = (notification) => {
+        return notificationManager.addNotification(notification);
+    };
 
-    // Save session data to localStorage whenever it changes
-    useEffect(() => {
-        if (preferences) {
-            localStorage.setItem('dsr-randomizer-preferences', JSON.stringify(preferences));
-        }
-    }, [preferences]);
-
-    useEffect(() => {
-        localStorage.setItem('dsr-randomizer-defeated-bosses', JSON.stringify(defeatedBosses));
-    }, [defeatedBosses]);
-
-    useEffect(() => {
-        localStorage.setItem('dsr-randomizer-blacklist', JSON.stringify(blacklist));
-    }, [blacklist]);
 
 
     useEffect(() => {
@@ -112,13 +94,13 @@ function App() {
                 if (addedWeapons > 0) {
                     showNotification({
                         message: `Boss defeated! ${addedWeapons} new weapon${addedWeapons > 1 ? 's' : ''} added to roulette and weapon blacklisted!`,
-                        type: 'success',
+                        type: NOTIFICATION_TYPES.SUCCESS,
                         duration: 5000
                     });
                 } else {
                     showNotification({
                         message: `Boss defeated! Weapon blacklisted. No new weapons unlocked.`,
-                        type: 'success',
+                        type: NOTIFICATION_TYPES.SUCCESS,
                         duration: 4000
                     });
                 }
@@ -135,14 +117,6 @@ function App() {
     });
     const removeFromBlacklist = (weapon) => setBlacklist(prev => prev.filter(w => w.name !== weapon.name));
     
-    const showNotification = (notification) => {
-        const id = Date.now() + Math.random();
-        setNotifications(prev => [...prev, { ...notification, id }]);
-    };
-    
-    const removeNotification = (id) => {
-        setNotifications(prev => prev.filter(notification => notification.id !== id));
-    };
 
     // Show new game confirmation
     const showNewGameConfirmation = () => {
@@ -151,18 +125,15 @@ function App() {
 
     // Clear session data
     const clearSession = () => {
-        localStorage.removeItem('dsr-randomizer-preferences');
-        localStorage.removeItem('dsr-randomizer-defeated-bosses');
-        localStorage.removeItem('dsr-randomizer-blacklist');
-        setPreferences(null);
-        setDefeatedBosses([]);
-        setBlacklist([]);
+        setPreferences(DEFAULT_VALUES.PREFERENCES);
+        setDefeatedBosses(DEFAULT_VALUES.DEFEATED_BOSSES);
+        setBlacklist(DEFAULT_VALUES.BLACKLIST);
         setShowPreferences(true);
         setRandomizedWeapon(null);
         setShowNewGameConfirm(false);
         showNotification({
             message: "Session cleared! Starting fresh.",
-            type: 'info',
+            type: NOTIFICATION_TYPES.INFO,
             duration: 3000
         });
     };
@@ -203,7 +174,7 @@ function App() {
                 </header>
 
                 {!showPreferences && (
-                    <main className="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-5 gap-10 max-w-8xl mx-auto animate-slide-up">
+                    <main className="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-7 gap-10 max-w-8xl mx-auto animate-slide-up">
                         {/* Enhanced left sidebar */}
                         <aside className="lg:col-span-1 space-y-8">
                             <div className="glass-effect rounded-xl p-6 shadow-lg card-hover">
@@ -214,18 +185,10 @@ function App() {
                                     showNotification={showNotification}
                                 />
                             </div>
-                            <div className="glass-effect rounded-xl p-6 shadow-lg card-hover">
-                                <Blacklist 
-                                    blacklist={blacklist}
-                                    addToBlacklist={addToBlacklist}
-                                    removeFromBlacklist={removeFromBlacklist}
-                                    activeWeapons={activeWeapons}
-                                />
-                            </div>
                         </aside>
 
                         {/* Enhanced main content area */}
-                        <section className="lg:col-span-3 h-[85vh]">
+                        <section className="lg:col-span-5 h-[1050px] relative z-10">
                             <div className="glass-effect rounded-xl p-6 shadow-lg card-hover h-full">
                                 <Roulette 
                                     activeWeapons={activeWeapons}
@@ -238,20 +201,22 @@ function App() {
                                 />
                             </div>
                         </section>
+
+                        {/* Right sidebar */}
+                        <aside className="lg:col-span-1">
+                            <div className="glass-effect rounded-xl p-6 shadow-lg card-hover">
+                                <Blacklist 
+                                    blacklist={blacklist}
+                                    addToBlacklist={addToBlacklist}
+                                    removeFromBlacklist={removeFromBlacklist}
+                                    activeWeapons={activeWeapons}
+                                />
+                            </div>
+                        </aside>
                     </main>
                 )}
             </div>
             
-            {/* Notifications */}
-            {notifications.map(notification => (
-                <Notification
-                    key={notification.id}
-                    message={notification.message}
-                    type={notification.type}
-                    duration={notification.duration}
-                    onClose={() => removeNotification(notification.id)}
-                />
-            ))}
 
             {/* New Game Confirmation Modal */}
             {showNewGameConfirm && (

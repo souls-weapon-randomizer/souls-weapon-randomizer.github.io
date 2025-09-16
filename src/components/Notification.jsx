@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
+import { createPortal } from 'react-dom';
+
+// Animation duration constant
+const ANIMATION_DURATION = 300;
 
 export default function Notification({ message, type = 'info', duration = 4000, onClose }) {
     const [isVisible, setIsVisible] = useState(true);
@@ -6,55 +10,51 @@ export default function Notification({ message, type = 'info', duration = 4000, 
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsVisible(false);
-            setTimeout(() => onClose(), 300); // Wait for animation to complete
+            setTimeout(() => {
+                onClose();
+            }, ANIMATION_DURATION); // Wait for animation to complete
         }, duration);
 
         return () => clearTimeout(timer);
     }, [duration, onClose]);
 
-    const getTypeStyles = () => {
-        switch (type) {
-            case 'success':
-                return 'bg-gradient-to-r from-green-600 to-green-500 border-green-400 text-white shadow-green-500/50 shadow-lg';
-            case 'warning':
-                return 'bg-yellow-600 border-yellow-500 text-white';
-            case 'error':
-                return 'bg-red-600 border-red-500 text-white';
-            default:
-                return 'bg-accent border-accent-light text-white';
-        }
-    };
+    const typeStyles = useMemo(() => {
+        const styles = {
+            success: 'bg-gradient-to-r from-green-600 to-green-500 border-green-400 text-white shadow-green-500/50 shadow-lg',
+            warning: 'bg-yellow-600 border-yellow-500 text-white',
+            error: 'bg-red-600 border-red-500 text-white',
+            info: 'bg-accent border-accent-light text-white'
+        };
+        return styles[type] || styles.info;
+    }, [type]);
 
-    const getIcon = () => {
-        switch (type) {
-            case 'success':
-                return '🎉';
-            case 'warning':
-                return '⚠️';
-            case 'error':
-                return '❌';
-            default:
-                return 'ℹ️';
-        }
-    };
+    const icon = useMemo(() => {
+        const icons = {
+            success: '🎉',
+            warning: '⚠️',
+            error: '❌',
+            info: 'ℹ️'
+        };
+        return icons[type] || icons.info;
+    }, [type]);
 
-    return (
+    return createPortal(
         <div
             className={`fixed top-4 right-4 z-50 max-w-sm p-4 rounded-lg border-2 shadow-lg transform transition-all duration-300 ${
                 isVisible 
                     ? 'translate-x-0 opacity-100 scale-100' 
                     : 'translate-x-full opacity-0 scale-95'
-            } ${getTypeStyles()}`}
+            } ${typeStyles}`}
         >
             <div className="flex items-center gap-3">
-                <span className="text-xl">{getIcon()}</span>
+                <span className="text-xl">{icon}</span>
                 <div className="flex-1">
                     <p className="font-semibold text-sm">{message}</p>
                 </div>
                 <button
                     onClick={() => {
                         setIsVisible(false);
-                        setTimeout(() => onClose(), 300);
+                        setTimeout(() => onClose(), ANIMATION_DURATION);
                     }}
                     className="text-white/80 hover:text-white transition-colors"
                 >
@@ -63,6 +63,7 @@ export default function Notification({ message, type = 'info', duration = 4000, 
                     </svg>
                 </button>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }
