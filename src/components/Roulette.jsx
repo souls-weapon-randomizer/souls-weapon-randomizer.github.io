@@ -136,9 +136,9 @@ export default function Roulette({ activeWeapons, randomizedWeapon, setRandomize
             <div className="h-full flex flex-col items-center justify-center text-center">
                 <div className="mb-6">
                     <h3 className="text-2xl font-gothic font-bold text-gradient mb-2">Weapon Roulette</h3>
-                    <p className="text-text-secondary">
-                        <span className="text-accent font-semibold">0</span> weapons available in the pool
-                    </p>
+                <p className="text-text-secondary">
+                    <span className="text-accent font-semibold">0</span> weapons available in the pool
+                </p>
                 </div>
                 
                 <div className="text-center">
@@ -154,6 +154,9 @@ export default function Roulette({ activeWeapons, randomizedWeapon, setRandomize
                 <h3 className="text-2xl font-gothic font-bold text-gradient mb-2">Weapon Roulette</h3>
                 <p className="text-text-secondary">
                     <span className="text-accent font-semibold">{activeWeapons.length}</span> weapons available in the pool
+                </p>
+                <p className="text-text-muted text-sm mt-2">
+                    Defeat bosses to unlock more weapons for randomization
                 </p>
             </div>
             

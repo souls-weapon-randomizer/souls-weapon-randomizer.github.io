@@ -16,6 +16,7 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
             allowRanged: formData.get('allowRanged') === 'on',
             allowConsumables: formData.get('allowConsumables') === 'on',
             allowBlackKnightWeapons: formData.get('allowBlackKnightWeapons') === 'on',
+            useMasterKey: formData.get('useMasterKey') === 'on',
         };
         setPreferences(prefs);
         onSave();
@@ -62,6 +63,16 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                         </h3>
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <label className="flex items-center p-3 bg-element-light/30 rounded-lg border border-element-light/50 cursor-pointer hover:bg-element-light/50 transition-colors">
+                                <input 
+                                    type="checkbox" 
+                                    name="useMasterKey" 
+                                    defaultChecked={currentPreferences?.useMasterKey ?? false}
+                                    className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
+                                />
+                                <span className="ml-3 text-text-secondary font-medium">Use Master Key</span>
+                            </label>
+
                             <label className="flex items-center p-3 bg-element-light/30 rounded-lg border border-element-light/50 cursor-pointer hover:bg-element-light/50 transition-colors">
                                 <input 
                                     type="checkbox" 

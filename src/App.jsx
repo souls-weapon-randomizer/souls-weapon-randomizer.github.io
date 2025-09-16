@@ -7,6 +7,7 @@ import notificationManager, { NOTIFICATION_TYPES } from './components/Notificati
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { STORAGE_KEYS, DEFAULT_VALUES, PAGES } from './constants/storage';
 import { allWeapons } from './data/weapons';
+import { allWeapons as allWeaponsMC } from './data/dsr_mc_weapons';
 
 // Clean background without particles
 const BackgroundPattern = () => (
@@ -63,7 +64,11 @@ function App() {
 
     useEffect(() => {
         if (!preferences) return;
-        const filtered = allWeapons.filter(weapon => {
+        
+        // Choose the correct weapon dataset based on Master Key setting
+        const weaponsData = preferences.useMasterKey ? allWeaponsMC : allWeapons;
+        
+        const filtered = weaponsData.filter(weapon => {
             if (blacklist.some(b => b.name === weapon.name)) return false;
             if (weapon.type === 'Pyromancy Flame' && !preferences.allowPyromancy) return false;
             if (weapon.type === 'Catalyst' && !preferences.allowCatalysts) return false;
@@ -75,7 +80,15 @@ function App() {
             if (weapon.starting_class === preferences.startingClass) return true;
             if (weapon.not_guaranteed && !preferences.allowNotGuaranteed) return false;
             if (weapon.farmable_only && !preferences.readyToFarm) return false;
-            const reqs = (weapon.required_bosses_with_farm && preferences.readyToFarm) ? weapon.required_bosses_with_farm : weapon.required_bosses;
+            
+            // Check required bosses - use alternative bosses if Master Key is enabled and they exist
+            let reqs = (weapon.required_bosses_with_farm && preferences.readyToFarm) ? weapon.required_bosses_with_farm : weapon.required_bosses;
+            
+            // If Master Key is enabled and alternative bosses exist, use them
+            if (preferences.useMasterKey && weapon.required_bosses_alternative) {
+                reqs = weapon.required_bosses_alternative;
+            }
+            
             if (!reqs || reqs.length === 0) return true;
             return reqs.every(boss => defeatedBosses.includes(boss));
         });
@@ -93,7 +106,10 @@ function App() {
             
             // Calculate new weapon count after boss is added
             setTimeout(() => {
-                const newFiltered = allWeapons.filter(weapon => {
+                // Choose the correct weapon dataset based on Master Key setting
+                const weaponsData = preferences.useMasterKey ? allWeaponsMC : allWeapons;
+                
+                const newFiltered = weaponsData.filter(weapon => {
                     if (blacklist.some(b => b.name === weapon.name)) return false;
                     if (weapon.type === 'Pyromancy Flame' && !preferences.allowPyromancy) return false;
                     if (weapon.type === 'Catalyst' && !preferences.allowCatalysts) return false;
@@ -105,7 +121,15 @@ function App() {
                     if (weapon.starting_class === preferences.startingClass) return true;
                     if (weapon.not_guaranteed && !preferences.allowNotGuaranteed) return false;
                     if (weapon.farmable_only && !preferences.readyToFarm) return false;
-                    const reqs = (weapon.required_bosses_with_farm && preferences.readyToFarm) ? weapon.required_bosses_with_farm : weapon.required_bosses;
+                    
+                    // Check required bosses - use alternative bosses if Master Key is enabled and they exist
+                    let reqs = (weapon.required_bosses_with_farm && preferences.readyToFarm) ? weapon.required_bosses_with_farm : weapon.required_bosses;
+                    
+                    // If Master Key is enabled and alternative bosses exist, use them
+                    if (preferences.useMasterKey && weapon.required_bosses_alternative) {
+                        reqs = weapon.required_bosses_alternative;
+                    }
+                    
                     const validReqs = reqs ? reqs.filter(boss => boss && boss.trim() !== '') : [];
                     if (!validReqs || validReqs.length === 0) return true;
                     return validReqs.every(boss => [...defeatedBosses, bossName].includes(boss));
@@ -202,8 +226,8 @@ function App() {
 
                 {!showPreferences && (
                     <main className="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-9 gap-10 max-w-8xl mx-auto animate-slide-up min-h-[calc(100vh-120px)]">
-                        {/* Enhanced left sidebar */}
-                        <aside className="lg:col-span-2 space-y-8">
+                        {/* Enhanced left sidebar - First on mobile, left on desktop */}
+                        <aside className="lg:col-span-2 space-y-8 order-2 lg:order-1">
                             <div className="glass-effect rounded-xl p-6 shadow-lg card-hover">
                                 <Bosses 
                                     defeatedBosses={defeatedBosses} 
@@ -213,8 +237,8 @@ function App() {
                             </div>
                         </aside>
 
-                        {/* Enhanced main content area */}
-                        <section className="lg:col-span-5 h-[1050px] relative z-10">
+                        {/* Enhanced main content area - Second on mobile, center on desktop */}
+                        <section className="lg:col-span-5 h-[1050px] relative z-10 order-1 lg:order-2">
                             <div className="glass-effect rounded-xl p-6 shadow-lg card-hover h-full">
                                 <Roulette 
                                     activeWeapons={activeWeapons}
@@ -227,8 +251,8 @@ function App() {
                             </div>
                         </section>
 
-                        {/* Right sidebar */}
-                        <aside className="lg:col-span-2">
+                        {/* Right sidebar - Third on mobile, right on desktop */}
+                        <aside className="lg:col-span-2 order-3 lg:order-3">
                             <div className="glass-effect rounded-xl p-6 shadow-lg card-hover">
                                 <Blacklist 
                                     blacklist={blacklist}
