@@ -281,8 +281,7 @@ export const allWeapons = [
         ],
         "img": "dsr_weapon_images/Black_Knight_Sword.png",
         "type": "Greatsword",
-        "farmable_only": true,
-        "not_guaranteed": true,
+        "black_knight_weapon": true,
         "wiki_url": "https://darksouls.wiki.fextralife.com/Black+Knight+Sword",
         "required_bosses": [
             "Asylum Demon"
@@ -473,8 +472,7 @@ export const allWeapons = [
         ],
         "img": "dsr_weapon_images/Black_Knight_Greatsword.png",
         "type": "Ultra Greatsword",
-        "farmable_only": true,
-        "not_guaranteed": true,
+        "black_knight_weapon": true,
         "wiki_url": "https://darksouls.wiki.fextralife.com/Black+Knight+Greatsword",
         "required_bosses": [
             "Taurus Demon"
@@ -909,8 +907,7 @@ export const allWeapons = [
         ],
         "img": "dsr_weapon_images/Black_Knight_Greataxe.png",
         "type": "Great Axe",
-        "farmable_only": true,
-        "not_guaranteed": true,
+        "black_knight_weapon": true,
         "wiki_url": "https://darksouls.wiki.fextralife.com/Black+Knight+Greataxe",
         "required_bosses": [
             "Asylum Demon"
@@ -1374,8 +1371,7 @@ export const allWeapons = [
         ],
         "img": "dsr_weapon_images/Black_Knight_Halberd.png",
         "type": "Halberd",
-        "farmable_only": true,
-        "not_guaranteed": true,
+        "black_knight_weapon": true,
         "wiki_url": "https://darksouls.wiki.fextralife.com/Black+Knight+Halberd",
         "required_bosses": [
             "Taurus Demon"

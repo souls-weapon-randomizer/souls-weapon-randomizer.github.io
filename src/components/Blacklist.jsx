@@ -67,7 +67,7 @@ export default function Blacklist({ blacklist, addToBlacklist, removeFromBlackli
                     <span className="cursor-default">➕</span>
                     <span>Add to Blacklist</span>
                     <span 
-                        className="text-accent text-sm font-normal cursor-default"
+                        className="text-accent text-sm font-normal cursor-default opacity-40"
                         title="Add weapons from the current pool to exclude them."
                     >
                         ?

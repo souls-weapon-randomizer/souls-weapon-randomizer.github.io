@@ -5,7 +5,7 @@ import Roulette from './components/Roulette';
 import Blacklist from './components/Blacklist';
 import notificationManager, { NOTIFICATION_TYPES } from './components/NotificationManager';
 import { useLocalStorage } from './hooks/useLocalStorage';
-import { STORAGE_KEYS, DEFAULT_VALUES } from './constants/storage';
+import { STORAGE_KEYS, DEFAULT_VALUES, PAGES } from './constants/storage';
 import { allWeapons } from './data/weapons';
 
 // Clean background without particles
@@ -26,21 +26,30 @@ const BackgroundPattern = () => (
 
 
 function App() {
-    // Use localStorage hook for session data
+    // Use localStorage hook for persistent data
     const [preferences, setPreferences] = useLocalStorage(STORAGE_KEYS.PREFERENCES, DEFAULT_VALUES.PREFERENCES);
     const [defeatedBosses, setDefeatedBosses] = useLocalStorage(STORAGE_KEYS.DEFEATED_BOSSES, DEFAULT_VALUES.DEFEATED_BOSSES);
     const [blacklist, setBlacklist] = useLocalStorage(STORAGE_KEYS.BLACKLIST, DEFAULT_VALUES.BLACKLIST);
+    const [currentPage, setCurrentPage] = useLocalStorage(STORAGE_KEYS.CURRENT_PAGE, DEFAULT_VALUES.CURRENT_PAGE);
     
     // Local state
     const [showPreferences, setShowPreferences] = useState(false);
     
-    // Show preferences modal on first visit (when no preferences are saved)
+    // Determine which page to show based on current page and preferences
     useEffect(() => {
         const hasPreferences = localStorage.getItem(STORAGE_KEYS.PREFERENCES);
-        if (!hasPreferences) {
+        
+        // Show preferences if:
+        // 1. No preferences are saved (first visit)
+        // 2. Current page is preferences
+        if (!hasPreferences || currentPage === PAGES.PREFERENCES) {
             setShowPreferences(true);
+        } else {
+            setShowPreferences(false);
         }
-    }, []);
+    }, [currentPage]);
+
+
     const [randomizedWeapon, setRandomizedWeapon] = useLocalStorage(STORAGE_KEYS.RANDOMIZED_WEAPON, DEFAULT_VALUES.RANDOMIZED_WEAPON);
     const [activeWeapons, setActiveWeapons] = useState([]);
     const [showNewGameConfirm, setShowNewGameConfirm] = useState(false);
@@ -62,6 +71,7 @@ function App() {
             const isRanged = weapon.type === 'Bow' || weapon.type === 'Greatbow' || weapon.type === 'Crossbow';
             if (isRanged && !preferences.allowRanged) return false;
             if (weapon.type === 'Consumable' && !preferences.allowConsumables) return false;
+            if (weapon.black_knight_weapon && !preferences.allowBlackKnightWeapons) return false;
             if (weapon.starting_class === preferences.startingClass) return true;
             if (weapon.not_guaranteed && !preferences.allowNotGuaranteed) return false;
             if (weapon.farmable_only && !preferences.readyToFarm) return false;
@@ -71,7 +81,11 @@ function App() {
         });
         setActiveWeapons(filtered);
     }, [preferences, defeatedBosses, blacklist]);
-    const handleSavePreferences = () => setShowPreferences(false);
+    const handleSavePreferences = () => {
+        setShowPreferences(false);
+        // Set current page to roulette when user closes preferences
+        setCurrentPage(PAGES.ROULETTE);
+    };
     const addDefeatedBoss = (bossName) => { 
         if (!defeatedBosses.includes(bossName)) {
             const oldWeaponCount = activeWeapons.length;
@@ -87,6 +101,7 @@ function App() {
                     const isRanged = weapon.type === 'Bow' || weapon.type === 'Greatbow' || weapon.type === 'Crossbow';
                     if (isRanged && !preferences.allowRanged) return false;
                     if (weapon.type === 'Consumable' && !preferences.allowConsumables) return false;
+                    if (weapon.black_knight_weapon && !preferences.allowBlackKnightWeapons) return false;
                     if (weapon.starting_class === preferences.startingClass) return true;
                     if (weapon.not_guaranteed && !preferences.allowNotGuaranteed) return false;
                     if (weapon.farmable_only && !preferences.readyToFarm) return false;
@@ -137,6 +152,7 @@ function App() {
         setDefeatedBosses(DEFAULT_VALUES.DEFEATED_BOSSES);
         setBlacklist(DEFAULT_VALUES.BLACKLIST);
         setRandomizedWeapon(DEFAULT_VALUES.RANDOMIZED_WEAPON);
+        setCurrentPage(DEFAULT_VALUES.CURRENT_PAGE);
         setShowPreferences(true);
         setShowNewGameConfirm(false);
         showNotification({
@@ -171,7 +187,10 @@ function App() {
                         </div>
                         <div className="flex-1 flex justify-end">
                             <button 
-                                onClick={() => setShowPreferences(true)}
+                                onClick={() => {
+                                    setCurrentPage(PAGES.PREFERENCES);
+                                    setShowPreferences(true);
+                                }}
                                 className="button-secondary flex items-center gap-2 text-base px-4 py-2"
                             >
                                 <span className="cursor-default">⚙️</span>

@@ -15,6 +15,7 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
             allowTalismans: formData.get('allowTalismans') === 'on',
             allowRanged: formData.get('allowRanged') === 'on',
             allowConsumables: formData.get('allowConsumables') === 'on',
+            allowBlackKnightWeapons: formData.get('allowBlackKnightWeapons') === 'on',
         };
         setPreferences(prefs);
         onSave();
@@ -129,6 +130,16 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                                     className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
                                 />
                                 <span className="ml-3 text-text-secondary font-medium">Allow Consumables</span>
+                            </label>
+
+                            <label className="flex items-center p-3 bg-element-light/30 rounded-lg border border-element-light/50 cursor-pointer hover:bg-element-light/50 transition-colors">
+                                <input 
+                                    type="checkbox" 
+                                    name="allowBlackKnightWeapons" 
+                                    defaultChecked={currentPreferences?.allowBlackKnightWeapons ?? false}
+                                    className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
+                                />
+                                <span className="ml-3 text-text-secondary font-medium">Allow Black Knight Weapons</span>
                             </label>
                         </div>
                     </div>

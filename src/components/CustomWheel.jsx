@@ -444,7 +444,7 @@ const CustomWheel = forwardRef(({
                 />
             </div>
             
-            {/* Static arrow pointer with border */}
+            {/* Static arrow pointer with gradient and shadow */}
             <div 
                 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
                 style={{
@@ -452,35 +452,34 @@ const CustomWheel = forwardRef(({
                     transform: 'translateX(-50%) translateY(-50%)', // Override the class transform
                 }}
             >
-                {/* Border arrow (larger, darker) */}
-                <div
+                {/* SVG arrow with copper gradient */}
+                <svg
+                    width="36"
+                    height="42"
+                    viewBox="0 0 36 42"
                     style={{
-                        width: '0',
-                        height: '0',
-                        borderLeft: '18px solid transparent',
-                        borderRight: '18px solid transparent',
-                        borderTop: '44px solid #8b7355',
                         position: 'absolute',
                         top: '0',
                         left: '50%',
-                        transform: 'translateX(-50%)',
-                        filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
+                        transform: 'translateX(-50%) rotate(180deg)',
+                        filter: 'drop-shadow(0 3px 6px rgba(0,0,0,0.4)) drop-shadow(0 1px 2px rgba(0,0,0,0.2))'
                     }}
-                />
-                {/* Main arrow (smaller, golden) */}
-                <div
-                    style={{
-                        width: '0',
-                        height: '0',
-                        borderLeft: '16px solid transparent',
-                        borderRight: '16px solid transparent',
-                        borderTop: '42px solid #d4af37',
-                        position: 'absolute',
-                        top: '2px',
-                        left: '50%',
-                        transform: 'translateX(-50%)'
-                    }}
-                />
+                >
+                    <defs>
+                        <linearGradient id="copperGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stopColor="#D4A017" />
+                            <stop offset="30%" stopColor="#B8860B" />
+                            <stop offset="70%" stopColor="#9A7209" />
+                            <stop offset="100%" stopColor="#7A5A07" />
+                        </linearGradient>
+                    </defs>
+                    <polygon
+                        points="18,0 0,42 36,42"
+                        fill="url(#copperGradient)"
+                        stroke="#6B4C00"
+                        strokeWidth="1.5"
+                    />
+                </svg>
             </div>
         </div>
     );
