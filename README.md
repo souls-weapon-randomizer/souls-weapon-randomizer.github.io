@@ -10,6 +10,7 @@ A web application for randomizing weapons in Dark Souls Remastered, helping play
   - Weapon type preferences (ranged, pyromancy, catalysts, talismans, consumables)
   - Farming tolerance settings
   - Guaranteed vs unguaranteed weapons
+  - Black Knight weapons support
 - **Boss Management**: Track defeated bosses to unlock new weapons
 - **Blacklist System**: Exclude weapons you don't want to use
 - **Session Persistence**: Your progress is automatically saved locally
@@ -26,8 +27,8 @@ A web application for randomizing weapons in Dark Souls Remastered, helping play
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/Gorogorov/dsr-weapon-randomized.git
-cd dsr-weapon-randomized
+git clone https://github.com/souls-weapon-randomizer/souls-weapon-randomizer.github.io.git
+cd souls-weapon-randomizer.github.io
 ```
 
 2. Install dependencies:
