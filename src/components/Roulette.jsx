@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { allBosses } from '../data/bosses';
 import WeaponDisplay from './WeaponDisplay';
 import BossSelectionModal from './BossSelectionModal';
@@ -17,14 +17,13 @@ const richWarmWheelColors = [
 ];
 
 
-export default function Roulette({ activeWeapons, randomizedWeapon, setRandomizedWeapon, addToBlacklist, showNotification, addDefeatedBoss, defeatedBosses }) {
+export default function Roulette({ activeWeapons, randomizedWeapon, setRandomizedWeapon, addToBlacklist, addDefeatedBoss, defeatedBosses }) {
     const [mustSpin, setMustSpin] = useState(false);
-    
-    const [prizeNumber, setPrizeNumber] = useState(0);
     const [wheelData, setWheelData] = useState([{ option: 'No Weapons' }]);
     const [showBossSelection, setShowBossSelection] = useState(false);
     const [selectedBoss, setSelectedBoss] = useState('');
     const wheelRef = useRef(null);
+    const mustSpinRef = useRef(false);
 
     useEffect(() => {
         const data = activeWeapons.length > 0
@@ -47,18 +46,21 @@ export default function Roulette({ activeWeapons, randomizedWeapon, setRandomize
     }, [showBossSelection, defeatedBosses]);
 
     const handleSpinClick = useCallback(() => {
-        if (activeWeapons.length === 0 || mustSpin) {
+        if (activeWeapons.length === 0 || mustSpinRef.current) {
             return;
         }
         
+        mustSpinRef.current = true;
         setMustSpin(true);
+        // Start spin immediately without waiting for useEffect
         if (wheelRef.current) {
             wheelRef.current.startSpin();
         }
-    }, [activeWeapons.length, mustSpin]);
+    }, [activeWeapons.length]);
 
     const onStopSpinning = useCallback((winningIndex, winningItem) => {
         if (winningItem && activeWeapons[winningIndex]) {
+            mustSpinRef.current = false;
             setMustSpin(false);
             setRandomizedWeapon(activeWeapons[winningIndex]);
         }
@@ -76,6 +78,13 @@ export default function Roulette({ activeWeapons, randomizedWeapon, setRandomize
     const handleCancelBossSelection = () => {
         setShowBossSelection(false);
     };
+
+    // Memoize wheel props to prevent unnecessary re-renders
+    const wheelProps = useMemo(() => ({
+        items: activeWeapons.length > 0 ? activeWeapons.map(w => w.name) : ['No Weapons Available'],
+        onSpinComplete: onStopSpinning,
+        colors: richWarmWheelColors
+    }), [activeWeapons, onStopSpinning]);
 
     // Boss selection modal overlay
     if (showBossSelection) {
@@ -154,10 +163,7 @@ export default function Roulette({ activeWeapons, randomizedWeapon, setRandomize
                 
                 <CustomWheel
                     ref={wheelRef}
-                    items={activeWeapons.length > 0 ? activeWeapons.map(w => w.name) : ['No Weapons Available']}
-                    onSpinComplete={onStopSpinning}
-                    isSpinning={mustSpin}
-                    colors={richWarmWheelColors}
+                    {...wheelProps}
                 />
             </div>
             

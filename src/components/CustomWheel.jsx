@@ -3,7 +3,6 @@ import React, { useRef, useEffect, useState, useCallback, useImperativeHandle, f
 const CustomWheel = forwardRef(({ 
     items = [], 
     onSpinComplete, 
-    isSpinning = false,
     colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F'],
     onSpinStart
 }, ref) => {
@@ -93,14 +92,41 @@ const CustomWheel = forwardRef(({
             ctx.arc(centerX, centerY, radius, startAngle, endAngle);
             ctx.closePath();
             
-            // Fill with color
-            ctx.fillStyle = colorCache[index];
+            // Add subtle shadow for the segment
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+            ctx.shadowBlur = 3;
+            ctx.shadowOffsetX = 1.5;
+            ctx.shadowOffsetY = 1.5;
+            
+            // Create gradient for the segment
+            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+            const baseColor = colorCache[index];
+            
+            // Convert hex to RGB for gradient
+            const hex = baseColor.replace('#', '');
+            const r = parseInt(hex.substr(0, 2), 16);
+            const g = parseInt(hex.substr(2, 2), 16);
+            const b = parseInt(hex.substr(4, 2), 16);
+            
+            // Create gradient from lighter center to darker edge
+            gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.9)`);
+            gradient.addColorStop(0.7, baseColor);
+            gradient.addColorStop(1, `rgba(${Math.max(0, r-30)}, ${Math.max(0, g-30)}, ${Math.max(0, b-30)}, 0.8)`);
+            
+            // Fill with gradient
+            ctx.fillStyle = gradient;
             ctx.fill();
+            
+            // Reset shadow
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
             
             // Draw border (only if there are multiple sections)
             if (items.length > 1) {
                 ctx.strokeStyle = '#2d2d2d';
-                ctx.lineWidth = 0.2;
+                ctx.lineWidth = 0.4;
                 ctx.stroke();
             }
             
@@ -118,8 +144,10 @@ const CustomWheel = forwardRef(({
             ctx.textBaseline = 'middle';
             ctx.fillStyle = '#ffffff';
             ctx.font = 'bold 13px Inter, sans-serif';
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-            ctx.shadowBlur = 2;
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+            ctx.shadowBlur = 3;
+            ctx.shadowOffsetX = 1;
+            ctx.shadowOffsetY = 1;
             
             // Truncate long text
             const maxLength = 12;
@@ -333,12 +361,7 @@ const CustomWheel = forwardRef(({
         };
     }, [drawWheel]);
 
-    // Start animation when isSpinning changes
-    useEffect(() => {
-        if (isSpinning && !isAnimating) {
-            startSpin();
-        }
-    }, [isSpinning, isAnimating, startSpin]);
+    // Note: Animation is now controlled directly via ref, not through isSpinning prop
 
     // Update cached wheel image when items change
     useEffect(() => {

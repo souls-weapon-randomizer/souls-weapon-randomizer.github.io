@@ -26,7 +26,11 @@
   }
   
   .card-hover {
-    @apply transition-all duration-300 hover:shadow-glow;
+    @apply transition-all duration-300;
+  }
+  
+  .card-hover:hover {
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
   }
   
   .button-primary {

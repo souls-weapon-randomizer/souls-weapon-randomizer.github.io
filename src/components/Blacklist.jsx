@@ -31,8 +31,8 @@ export default function Blacklist({ blacklist, addToBlacklist, removeFromBlackli
                 <div className="bg-element-light/30 rounded-lg p-4 min-h-[120px] border border-element-light/50">
                     {blacklist.length > 0 ? (
                         <div className="space-y-2">
-                            {blacklist.map(weapon => (
-                                <div key={weapon.name} className="flex items-center justify-between p-2 bg-element/50 rounded border border-element-light/30">
+                            {blacklist.map((weapon, index) => (
+                                <div key={weapon.name} className={`flex items-center justify-between p-2 rounded border border-element-light/90 shadow-xl ${index % 2 === 0 ? 'bg-element/80' : 'bg-element-light/60'}`}>
                                     <div className="flex items-center gap-3">
                                         <img 
                                             src={weapon.img} 
@@ -43,7 +43,7 @@ export default function Blacklist({ blacklist, addToBlacklist, removeFromBlackli
                                     </div>
                                     <button 
                                         onClick={() => removeFromBlacklist(weapon)}
-                                        className="text-error hover:text-error/80 transition-colors p-1"
+                                        className="text-error hover:text-error/80 transition-colors p-1 rounded"
                                         title="Remove from blacklist"
                                     >
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

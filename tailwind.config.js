@@ -59,9 +59,9 @@ export default {
         xs: '2px',
       },
       boxShadow: {
-        'glow': '0 0 20px rgba(251, 191, 36, 0.3)',
-        'glow-lg': '0 0 30px rgba(251, 191, 36, 0.4)',
-        'inner-glow': 'inset 0 0 20px rgba(251, 191, 36, 0.1)',
+        'glow': '0 0 20px rgba(24, 20, 10, 0.7)',
+        'glow-lg': '0 0 30px rgba(29, 23, 10, 0.8)',
+        'inner-glow': 'inset 0 0 20px rgba(31, 26, 14, 0.4)',
       },
     },
   },

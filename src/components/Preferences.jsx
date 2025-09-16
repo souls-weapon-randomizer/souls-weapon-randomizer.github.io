@@ -146,7 +146,7 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                             <button
                                 type="button"
                                 onClick={onShowNewGameConfirmation}
-                                className="button-secondary w-full text-lg py-4 flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 border-orange-500"
+                                className="w-full text-lg py-4 flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 border border-orange-500 transition-all duration-300 transform hover:scale-105 font-semibold rounded-lg"
                             >
                                 <span className="cursor-default">🎯</span>
                                 <span>New Game</span>

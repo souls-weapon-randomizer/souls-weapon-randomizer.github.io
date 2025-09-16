@@ -32,8 +32,16 @@ function App() {
     const [blacklist, setBlacklist] = useLocalStorage(STORAGE_KEYS.BLACKLIST, DEFAULT_VALUES.BLACKLIST);
     
     // Local state
-    const [showPreferences, setShowPreferences] = useState(!preferences);
-    const [randomizedWeapon, setRandomizedWeapon] = useState(null);
+    const [showPreferences, setShowPreferences] = useState(false);
+    
+    // Show preferences modal on first visit (when no preferences are saved)
+    useEffect(() => {
+        const hasPreferences = localStorage.getItem(STORAGE_KEYS.PREFERENCES);
+        if (!hasPreferences) {
+            setShowPreferences(true);
+        }
+    }, []);
+    const [randomizedWeapon, setRandomizedWeapon] = useLocalStorage(STORAGE_KEYS.RANDOMIZED_WEAPON, DEFAULT_VALUES.RANDOMIZED_WEAPON);
     const [activeWeapons, setActiveWeapons] = useState([]);
     const [showNewGameConfirm, setShowNewGameConfirm] = useState(false);
     
@@ -128,8 +136,8 @@ function App() {
         setPreferences(DEFAULT_VALUES.PREFERENCES);
         setDefeatedBosses(DEFAULT_VALUES.DEFEATED_BOSSES);
         setBlacklist(DEFAULT_VALUES.BLACKLIST);
+        setRandomizedWeapon(DEFAULT_VALUES.RANDOMIZED_WEAPON);
         setShowPreferences(true);
-        setRandomizedWeapon(null);
         setShowNewGameConfirm(false);
         showNotification({
             message: "Session cleared! Starting fresh.",
@@ -147,7 +155,7 @@ function App() {
     return (
         <div className="text-text-main min-h-screen font-sans relative">
             <BackgroundPattern />
-            <div className="relative z-10">
+            <div className="relative z-10 min-h-screen">
                 {showPreferences && <Preferences setPreferences={setPreferences} onSave={handleSavePreferences} currentPreferences={preferences} onShowNewGameConfirmation={showNewGameConfirmation} onClose={handleSavePreferences} />}
 
                 <header className="glass-effect border-b border-element-light/30 p-6 text-center sticky top-0 z-20 shadow-lg">
@@ -174,15 +182,14 @@ function App() {
                 </header>
 
                 {!showPreferences && (
-                    <main className="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-7 gap-10 max-w-8xl mx-auto animate-slide-up">
+                    <main className="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-9 gap-10 max-w-8xl mx-auto animate-slide-up min-h-[calc(100vh-120px)]">
                         {/* Enhanced left sidebar */}
-                        <aside className="lg:col-span-1 space-y-8">
+                        <aside className="lg:col-span-2 space-y-8">
                             <div className="glass-effect rounded-xl p-6 shadow-lg card-hover">
                                 <Bosses 
                                     defeatedBosses={defeatedBosses} 
                                     addDefeatedBoss={addDefeatedBoss}
                                     removeDefeatedBoss={removeDefeatedBoss}
-                                    showNotification={showNotification}
                                 />
                             </div>
                         </aside>
@@ -195,7 +202,6 @@ function App() {
                                     randomizedWeapon={randomizedWeapon}
                                     setRandomizedWeapon={setRandomizedWeapon}
                                     addToBlacklist={addToBlacklist}
-                                    showNotification={showNotification}
                                     addDefeatedBoss={addDefeatedBoss}
                                     defeatedBosses={defeatedBosses}
                                 />
@@ -203,7 +209,7 @@ function App() {
                         </section>
 
                         {/* Right sidebar */}
-                        <aside className="lg:col-span-1">
+                        <aside className="lg:col-span-2">
                             <div className="glass-effect rounded-xl p-6 shadow-lg card-hover">
                                 <Blacklist 
                                     blacklist={blacklist}
@@ -215,10 +221,8 @@ function App() {
                         </aside>
                     </main>
                 )}
-            </div>
-            
 
-            {/* New Game Confirmation Modal */}
+                {/* New Game Confirmation Modal */}
             {showNewGameConfirm && (
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
                     <div className="glass-effect border border-element-light/30 rounded-xl p-8 max-w-md mx-4 shadow-2xl animate-fade-in">
@@ -248,6 +252,26 @@ function App() {
                     </div>
                 </div>
             )}
+
+                {/* Footer */}
+                {!showPreferences && (
+                    <footer className="border-t border-element-light/30 relative z-20" style={{background: 'linear-gradient(135deg,rgb(41, 40, 38) 0%,rgb(34, 32, 26) 100%)'}}>
+                        <div className="mx-auto px-8 py-6 flex items-center justify-end">
+                            <a 
+                                href="https://t.me/hpaapipny" 
+                                rel="noopener noreferrer" 
+                                target="_blank"
+                                className="text-accent hover:text-accent-light transition-colors duration-200"
+                            >
+                                <span className="sr-only">Telegram</span>
+                                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </footer>
+                )}
+            </div>
         </div>
     );
 }

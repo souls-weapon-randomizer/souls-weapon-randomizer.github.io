@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { allBosses, isDlcBoss } from '../data/bosses';
 
-export default function Bosses({ defeatedBosses, addDefeatedBoss, removeDefeatedBoss, showNotification }) {
+export default function Bosses({ defeatedBosses, addDefeatedBoss, removeDefeatedBoss }) {
     const [selectedBoss, setSelectedBoss] = useState('');
     const availableBosses = allBosses.filter(b => !defeatedBosses.includes(b));
     useEffect(() => {
@@ -25,8 +25,8 @@ export default function Bosses({ defeatedBosses, addDefeatedBoss, removeDefeated
                 <div className="bg-element-light/30 rounded-lg p-4 min-h-[120px] border border-element-light/50">
                     {defeatedBosses.length > 0 ? (
                         <div className="space-y-2">
-                            {defeatedBosses.map(boss => (
-                                <div key={boss} className="flex items-center justify-between p-2 bg-element/50 rounded border border-element-light/30">
+                            {defeatedBosses.map((boss, index) => (
+                                <div key={boss} className={`flex items-center justify-between p-2 rounded border border-element-light/90 shadow-xl ${index % 2 === 0 ? 'bg-element/80' : 'bg-element-light/60'}`}>
                                     <div className="flex items-center gap-2">
                                         <span className="text-accent cursor-default">✓</span>
                                         <span className={`text-sm font-bold ${isDlcBoss(boss) ? 'text-blue-400' : 'text-text-secondary'}`}>
@@ -35,7 +35,7 @@ export default function Bosses({ defeatedBosses, addDefeatedBoss, removeDefeated
                                     </div>
                                     <button 
                                         onClick={() => removeDefeatedBoss(boss)}
-                                        className="text-error hover:text-error/80 transition-colors p-1"
+                                        className="text-error hover:text-error/80 transition-colors p-1 rounded"
                                         title="Remove from defeated bosses"
                                     >
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
