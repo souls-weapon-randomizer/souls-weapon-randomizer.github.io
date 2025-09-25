@@ -1,5 +1,7 @@
 import { allWeapons } from './weapons.js';
 import { allBosses, startingClasses, isDlcBoss } from './bosses.js';
+import Preferences from './Preferences.jsx';
+import { filterWeapons } from './filterWeapons.js';
 
 export const DSR_CONFIG = {
     id: 'dsr',
@@ -49,6 +51,14 @@ export const DSR_CONFIG = {
     features: {
         masterKey: true,
         blackKnightWeapons: true,
-        farming: true
-    }
+        farming: true,
+        crowsOnly: false,
+        bonfireAscetic: false,
+        notGuaranteed: true,
+        startingGift: true
+    },
+    
+    // Game-specific components and functions
+    Preferences,
+    filterWeapons
 };

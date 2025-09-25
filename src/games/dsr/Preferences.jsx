@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
-// -> Logic is the same, just updated with the new theme classes
 export default function Preferences({ setPreferences, onSave, currentPreferences, onShowNewGameConfirmation, onClose, gameConfig, isVisible }) {
     // Track if form has been initialized to prevent resetting after user interaction
     const [isInitialized, setIsInitialized] = useState(false);
     
-    // Local state to manage form values
+    // Local state to manage form values - DSR specific
     const [formState, setFormState] = useState({
         startingClass: currentPreferences?.startingClass || gameConfig?.startingClasses?.[0] || 'Warrior',
         startingGift: currentPreferences?.startingGift || 'Black Firebomb',
         readyToFarm: currentPreferences?.readyToFarm || false,
-        allowNotGuaranteed: currentPreferences?.allowNotGuaranteed || false,
+        allowRanged: currentPreferences?.allowRanged || false,
         allowPyromancy: currentPreferences?.allowPyromancy || false,
         allowCatalysts: currentPreferences?.allowCatalysts || false,
         allowTalismans: currentPreferences?.allowTalismans || false,
-        allowRanged: currentPreferences?.allowRanged || false,
         allowConsumables: currentPreferences?.allowConsumables || false,
         allowBlackKnightWeapons: currentPreferences?.allowBlackKnightWeapons || false,
-        useMasterKey: currentPreferences?.useMasterKey || false,
+        allowNotGuaranteed: currentPreferences?.allowNotGuaranteed || false,
     });
 
     // Only initialize form state once when component first mounts
@@ -27,14 +25,13 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                 startingClass: currentPreferences.startingClass || gameConfig?.startingClasses?.[0] || 'Warrior',
                 startingGift: currentPreferences.startingGift || 'Black Firebomb',
                 readyToFarm: currentPreferences.readyToFarm || false,
-                allowNotGuaranteed: currentPreferences.allowNotGuaranteed || false,
+                allowRanged: currentPreferences.allowRanged || false,
                 allowPyromancy: currentPreferences.allowPyromancy || false,
                 allowCatalysts: currentPreferences.allowCatalysts || false,
                 allowTalismans: currentPreferences.allowTalismans || false,
-                allowRanged: currentPreferences.allowRanged || false,
                 allowConsumables: currentPreferences.allowConsumables || false,
                 allowBlackKnightWeapons: currentPreferences.allowBlackKnightWeapons || false,
-                useMasterKey: currentPreferences.useMasterKey || false,
+                allowNotGuaranteed: currentPreferences.allowNotGuaranteed || false,
             });
             setIsInitialized(true);
         }
@@ -54,28 +51,18 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
         onSave(formState);
     };
 
+
     return (
         <div className={`fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-all duration-300 ${
             isVisible ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}>
             <div className="glass-effect p-8 rounded-2xl shadow-2xl w-full max-w-3xl border border-element-light/50 animate-slide-up">
-                <div className="text-center mb-8 relative">
-                    {currentPreferences && onClose && (
-                        <button
-                            onClick={() => {
-                                setPreferences(formState);
-                                onSave(formState);
-                            }}
-                            className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center rounded-full bg-element-light/20 hover:bg-element-light/30 transition-colors duration-200"
-                        >
-                            <span className="cursor-default text-text-main text-lg">✕</span>
-                        </button>
-                    )}
+                <div className="text-center mb-8">
                     <h2 className="text-3xl font-gothic font-bold text-gradient mb-2">
-                        Setup Your {gameConfig?.name || 'Game'} Run
+                        Setup Your {gameConfig?.name || 'Dark Souls Remastered'} Run
                     </h2>
                     <p className="text-text-secondary">
-                        Configure your randomized {gameConfig?.name || 'game'} experience
+                        Configure your randomized {gameConfig?.name || 'Dark Souls Remastered'} experience
                     </p>
                 </div>
                 
@@ -200,18 +187,16 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                                 <span className="ml-3 text-text-secondary font-medium">Allow Consumables</span>
                             </label>
 
-                            {gameConfig?.features?.blackKnightWeapons && (
-                                <label className="flex items-center p-3 bg-element-light/30 rounded-lg border border-element-light/50 cursor-pointer hover:bg-element-light/50 transition-colors">
-                                    <input 
-                                        type="checkbox" 
-                                        name="allowBlackKnightWeapons" 
-                                        checked={formState.allowBlackKnightWeapons}
-                                        onChange={handleInputChange}
-                                        className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
-                                    />
-                                    <span className="ml-3 text-text-secondary font-medium">Allow Black Knight Weapons</span>
-                                </label>
-                            )}
+                            <label className="flex items-center p-3 bg-element-light/30 rounded-lg border border-element-light/50 cursor-pointer hover:bg-element-light/50 transition-colors">
+                                <input 
+                                    type="checkbox" 
+                                    name="allowBlackKnightWeapons" 
+                                    checked={formState.allowBlackKnightWeapons}
+                                    onChange={handleInputChange}
+                                    className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
+                                />
+                                <span className="ml-3 text-text-secondary font-medium">Allow Black Knight Weapons</span>
+                            </label>
                         </div>
                     </div>
                     

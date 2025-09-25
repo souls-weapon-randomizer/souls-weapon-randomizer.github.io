@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGameData } from '../../hooks/useGameData';
 import { getGameConfig } from '../../games/index.js';
-import Preferences from '../../components/Preferences';
+// Import will be dynamic based on game
 import Bosses from '../../components/Bosses';
 import Roulette from '../../components/Roulette';
 import Blacklist from '../../components/Blacklist';
@@ -89,52 +89,8 @@ const GamePage = () => {
             const newlyUnlocked = gameConfig.weapons.filter(weapon => {
                 if (blacklist.some(w => w.name === weapon.name)) return false;
                 
-                // Check weapon type preferences
-                if (weapon.type === 'Bow' || weapon.type === 'Crossbow' || weapon.type === 'Greatbow') {
-                    if (!preferences.allowRanged) return false;
-                }
-                
-                if (weapon.type === 'Pyromancy Flame') {
-                    if (!preferences.allowPyromancy) return false;
-                }
-                
-                if (weapon.type === 'Catalyst') {
-                    if (!preferences.allowCatalysts) return false;
-                }
-                
-                if (weapon.type === 'Talisman') {
-                    if (!preferences.allowTalismans) return false;
-                }
-                
-                if (weapon.type === 'Consumable') {
-                    if (!preferences.allowConsumables) return false;
-                }
-                
-                // Check boss requirements using new merged format
-                if (!weapon.required_bosses || weapon.required_bosses.length === 0) return true;
-                
-                // Find a valid requirement that matches current preferences
-                const validRequirement = weapon.required_bosses.find(req => {
-                    // Check Black Knight weapons if not allowed
-                    if (req.black_knight_weapon && !preferences.allowBlackKnightWeapons) return false;
-                    
-                    // Check not guaranteed weapons if not allowed
-                    if (req.not_guaranteed && !preferences.allowNotGuaranteed) return false;
-                    
-                    // Check farmable preference: if weapon requires farming, user must have it enabled
-                    // If weapon doesn't require farming, it's always available
-                    if (req.farmable_only && !preferences.readyToFarm) return false;
-                    
-                    // Check master key requirement: if weapon requires master key, user must have it enabled
-                    // If weapon doesn't require master key, it's always available
-                    if (req.require_master_key && preferences.startingGift !== 'Master Key') return false;
-                    
-                    // Check if all required bosses are defeated (including the newly defeated boss)
-                    if (!req.bosses || req.bosses.length === 0) return true;
-                    return req.bosses.every(boss => [...defeatedBosses, bossName].includes(boss));
-                });
-                
-                return !!validRequirement;
+                // Use game-specific filter function with updated defeated bosses
+                return gameConfig.filterWeapons(weapon, preferences, [...defeatedBosses, bossName]);
             });
             
             if (newlyUnlocked.length > 0) {
@@ -185,7 +141,7 @@ const GamePage = () => {
         <div className="text-text-main min-h-screen font-sans relative">
             <BackgroundPattern />
             <div className="relative z-10 min-h-screen">
-                <Preferences 
+                <gameConfig.Preferences 
                     setPreferences={setPreferences} 
                     onSave={handleSavePreferences} 
                     currentPreferences={preferences} 
