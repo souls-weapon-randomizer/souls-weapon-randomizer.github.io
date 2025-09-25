@@ -1,3 +1,8 @@
+import { allBosses, startingClasses } from './bosses.js';
+
+// DS2 doesn't have DLC bosses, so this always returns false
+const isDlcBoss = () => false;
+
 // Placeholder weapons data for Dark Souls 2
 const placeholderWeapons = [
     {
@@ -28,6 +33,9 @@ export const DS2_CONFIG = {
     
     // Game data
     weapons: placeholderWeapons,
+    allBosses: allBosses,
+    startingClasses: startingClasses,
+    isDlcBoss: isDlcBoss,
     
     // Game-specific settings
     settings: {

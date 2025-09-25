@@ -1,5 +1,4 @@
 import React from 'react';
-import { isDlcBoss } from '../data/bosses';
 
 // Modal component for selecting defeated boss
 const BossSelectionModal = ({ 
@@ -7,7 +6,8 @@ const BossSelectionModal = ({
     selectedBoss, 
     onBossChange, 
     onConfirm, 
-    onCancel, 
+    onCancel,
+    gameConfig, 
     isDisabled 
 }) => (
     <div 
@@ -41,7 +41,7 @@ const BossSelectionModal = ({
                 >
                     {availableBosses.map(boss => (
                         <option key={boss} value={boss}>
-                            {isDlcBoss(boss) ? `${boss} (DLC)` : boss}
+                            {gameConfig?.isDlcBoss?.(boss) ? `${boss} (DLC)` : boss}
                         </option>
                     ))}
                 </select>

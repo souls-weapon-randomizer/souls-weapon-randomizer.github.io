@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { allBosses, isDlcBoss } from '../data/bosses';
 
-export default function Bosses({ defeatedBosses, addDefeatedBoss, removeDefeatedBoss }) {
+export default function Bosses({ defeatedBosses, addDefeatedBoss, removeDefeatedBoss, gameConfig }) {
     const [selectedBoss, setSelectedBoss] = useState('');
+    const allBosses = gameConfig?.allBosses || [];
     const availableBosses = allBosses.filter(b => !defeatedBosses.includes(b));
     useEffect(() => {
         if (availableBosses.length > 0) setSelectedBoss(availableBosses[0]);
@@ -29,7 +29,7 @@ export default function Bosses({ defeatedBosses, addDefeatedBoss, removeDefeated
                                 <div key={boss} className={`flex items-center justify-between p-2 rounded border border-element-light/90 shadow-xl ${index % 2 === 0 ? 'bg-element/80' : 'bg-element-light/60'}`}>
                                     <div className="flex items-center gap-2">
                                         <span className="text-accent cursor-default">✓</span>
-                                        <span className={`text-sm font-bold ${isDlcBoss(boss) ? 'text-blue-400' : 'text-text-secondary'}`}>
+                                        <span className={`text-sm font-bold ${gameConfig?.isDlcBoss?.(boss) ? 'text-blue-400' : 'text-text-secondary'}`}>
                                             {boss}
                                         </span>
                                     </div>
@@ -68,7 +68,7 @@ export default function Bosses({ defeatedBosses, addDefeatedBoss, removeDefeated
                     >
                         {availableBosses.map(boss => (
                             <option key={boss} value={boss}>
-                                {isDlcBoss(boss) ? `${boss} (DLC)` : boss}
+                                {gameConfig?.isDlcBoss?.(boss) ? `${boss} (DLC)` : boss}
                             </option>
                         ))}
                     </select>

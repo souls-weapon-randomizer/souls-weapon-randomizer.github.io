@@ -217,6 +217,7 @@ const GamePage = () => {
                                     defeatedBosses={defeatedBosses} 
                                     addDefeatedBoss={addDefeatedBoss}
                                     removeDefeatedBoss={removeDefeatedBoss}
+                                    gameConfig={gameConfig}
                                 />
                             </div>
                         </aside>
@@ -231,6 +232,7 @@ const GamePage = () => {
                                     addToBlacklist={addToBlacklist}
                                     addDefeatedBoss={addDefeatedBoss}
                                     defeatedBosses={defeatedBosses}
+                                    gameConfig={gameConfig}
                                 />
                             </div>
                         </section>

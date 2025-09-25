@@ -1,5 +1,5 @@
 import { allWeapons } from './weapons.js';
-import { startingClasses } from './bosses.js';
+import { allBosses, startingClasses, isDlcBoss } from './bosses.js';
 
 export const DSR_CONFIG = {
     id: 'dsr',
@@ -11,7 +11,9 @@ export const DSR_CONFIG = {
     
     // Game data
     weapons: allWeapons,
+    allBosses: allBosses,
     startingClasses: startingClasses,
+    isDlcBoss: isDlcBoss,
     
     // Game-specific settings
     settings: {

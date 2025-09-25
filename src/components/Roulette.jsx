@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { allBosses } from '../data/bosses';
 import WeaponDisplay from './WeaponDisplay';
 import BossSelectionModal from './BossSelectionModal';
 import CustomWheel from './CustomWheel';
@@ -17,7 +16,7 @@ const richWarmWheelColors = [
 ];
 
 
-export default function Roulette({ activeWeapons, randomizedWeapon, setRandomizedWeapon, addToBlacklist, addDefeatedBoss, defeatedBosses }) {
+export default function Roulette({ activeWeapons, randomizedWeapon, setRandomizedWeapon, addToBlacklist, addDefeatedBoss, defeatedBosses, gameConfig }) {
     const [mustSpin, setMustSpin] = useState(false);
     const [wheelData, setWheelData] = useState([{ option: 'No Weapons' }]);
     const [showBossSelection, setShowBossSelection] = useState(false);
@@ -36,6 +35,7 @@ export default function Roulette({ activeWeapons, randomizedWeapon, setRandomize
 
     useEffect(() => {
         if (showBossSelection) {
+            const allBosses = gameConfig?.allBosses || [];
             const availableBosses = allBosses.filter(b => !defeatedBosses.includes(b));
             if (availableBosses.length > 0) {
                 setSelectedBoss(availableBosses[0]);
@@ -88,6 +88,7 @@ export default function Roulette({ activeWeapons, randomizedWeapon, setRandomize
 
     // Boss selection modal overlay
     if (showBossSelection) {
+        const allBosses = gameConfig?.allBosses || [];
         const availableBosses = allBosses.filter(b => !defeatedBosses.includes(b));
         
         return (
@@ -110,6 +111,7 @@ export default function Roulette({ activeWeapons, randomizedWeapon, setRandomize
                     onBossChange={setSelectedBoss}
                     onConfirm={handleBossSelection}
                     onCancel={handleCancelBossSelection}
+                    gameConfig={gameConfig}
                     isDisabled={!selectedBoss}
                 />
             </>
