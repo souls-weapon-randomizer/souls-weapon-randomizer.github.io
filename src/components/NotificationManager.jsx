@@ -54,6 +54,11 @@ class NotificationManager {
     getNotifications() {
         return [...this.notifications];
     }
+
+    // Alias for addNotification for convenience
+    show(notification) {
+        return this.addNotification(notification);
+    }
 }
 
 // Global instance

@@ -27,7 +27,9 @@ export function useLocalStorage(key, initialValue) {
             
             // Save to localStorage
             if (valueToStore === undefined) {
-                window.localStorage.removeItem(key);
+                if (window.localStorage.getItem(key) !== null) {
+                    window.localStorage.removeItem(key);
+                }
             } else {
                 window.localStorage.setItem(key, JSON.stringify(valueToStore));
             }

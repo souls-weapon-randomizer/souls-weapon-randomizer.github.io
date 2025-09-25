@@ -1,41 +1,82 @@
-import React from 'react';
-import { startingClasses } from '../data/bosses';
+import React, { useState, useEffect } from 'react';
 
 // -> Logic is the same, just updated with the new theme classes
-export default function Preferences({ setPreferences, onSave, currentPreferences, onShowNewGameConfirmation, onClose }) {
+export default function Preferences({ setPreferences, onSave, currentPreferences, onShowNewGameConfirmation, onClose, gameConfig, isVisible }) {
+    // Track if form has been initialized to prevent resetting after user interaction
+    const [isInitialized, setIsInitialized] = useState(false);
+    
+    // Local state to manage form values
+    const [formState, setFormState] = useState({
+        startingClass: currentPreferences?.startingClass || gameConfig?.startingClasses?.[0] || 'Warrior',
+        startingGift: currentPreferences?.startingGift || 'Black Firebomb',
+        readyToFarm: currentPreferences?.readyToFarm || false,
+        allowNotGuaranteed: currentPreferences?.allowNotGuaranteed || false,
+        allowPyromancy: currentPreferences?.allowPyromancy || false,
+        allowCatalysts: currentPreferences?.allowCatalysts || false,
+        allowTalismans: currentPreferences?.allowTalismans || false,
+        allowRanged: currentPreferences?.allowRanged || false,
+        allowConsumables: currentPreferences?.allowConsumables || false,
+        allowBlackKnightWeapons: currentPreferences?.allowBlackKnightWeapons || false,
+        useMasterKey: currentPreferences?.useMasterKey || false,
+    });
+
+    // Only initialize form state once when component first mounts
+    useEffect(() => {
+        if (currentPreferences && !isInitialized) {
+            setFormState({
+                startingClass: currentPreferences.startingClass || gameConfig?.startingClasses?.[0] || 'Warrior',
+                startingGift: currentPreferences.startingGift || 'Black Firebomb',
+                readyToFarm: currentPreferences.readyToFarm || false,
+                allowNotGuaranteed: currentPreferences.allowNotGuaranteed || false,
+                allowPyromancy: currentPreferences.allowPyromancy || false,
+                allowCatalysts: currentPreferences.allowCatalysts || false,
+                allowTalismans: currentPreferences.allowTalismans || false,
+                allowRanged: currentPreferences.allowRanged || false,
+                allowConsumables: currentPreferences.allowConsumables || false,
+                allowBlackKnightWeapons: currentPreferences.allowBlackKnightWeapons || false,
+                useMasterKey: currentPreferences.useMasterKey || false,
+            });
+            setIsInitialized(true);
+        }
+    }, [currentPreferences, gameConfig, isInitialized]);
+
+    const handleInputChange = (e) => {
+        const { name, type, checked, value } = e.target;
+        setFormState(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const formData = new FormData(e.target);
-        const prefs = {
-            startingClass: formData.get('startingClass'),
-            readyToFarm: formData.get('readyToFarm') === 'on',
-            allowNotGuaranteed: formData.get('allowNotGuaranteed') === 'on',
-            allowPyromancy: formData.get('allowPyromancy') === 'on',
-            allowCatalysts: formData.get('allowCatalysts') === 'on',
-            allowTalismans: formData.get('allowTalismans') === 'on',
-            allowRanged: formData.get('allowRanged') === 'on',
-            allowConsumables: formData.get('allowConsumables') === 'on',
-            allowBlackKnightWeapons: formData.get('allowBlackKnightWeapons') === 'on',
-            useMasterKey: formData.get('useMasterKey') === 'on',
-        };
-        setPreferences(prefs);
-        onSave();
+        setPreferences(formState);
+        onSave(formState);
     };
 
     return (
-        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+        <div className={`fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-all duration-300 ${
+            isVisible ? 'opacity-100 visible' : 'opacity-0 invisible'
+        }`}>
             <div className="glass-effect p-8 rounded-2xl shadow-2xl w-full max-w-3xl border border-element-light/50 animate-slide-up">
                 <div className="text-center mb-8 relative">
                     {currentPreferences && onClose && (
                         <button
-                            onClick={onClose}
+                            onClick={() => {
+                                setPreferences(formState);
+                                onSave(formState);
+                            }}
                             className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center rounded-full bg-element-light/20 hover:bg-element-light/30 transition-colors duration-200"
                         >
                             <span className="cursor-default text-text-main text-lg">✕</span>
                         </button>
                     )}
-                    <h2 className="text-3xl font-gothic font-bold text-gradient mb-2">Setup Your Run</h2>
-                    <p className="text-text-secondary">Configure your randomized Dark Souls Remastered experience</p>
+                    <h2 className="text-3xl font-gothic font-bold text-gradient mb-2">
+                        Setup Your {gameConfig?.name || 'Game'} Run
+                    </h2>
+                    <p className="text-text-secondary">
+                        Configure your randomized {gameConfig?.name || 'game'} experience
+                    </p>
                 </div>
                 
                 <form onSubmit={handleSubmit} className="space-y-8">
@@ -48,11 +89,30 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                             name="startingClass" 
                             id="startingClass" 
                             className="input-field w-full"
-                            defaultValue={currentPreferences?.startingClass || startingClasses[0]}
+                            value={formState.startingClass}
+                            onChange={handleInputChange}
                         >
-                            {startingClasses.map(c => (
+                            {gameConfig.startingClasses.map(c => (
                                 <option key={c} value={c}>{c}</option>
                             ))}
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label htmlFor="startingGift" className="block text-text-main font-semibold mb-3 flex items-center gap-2">
+                            <span>🎁</span>
+                            <span>Starting Gift</span>
+                        </label>
+                        <select 
+                            name="startingGift" 
+                            id="startingGift" 
+                            className="input-field w-full"
+                            value={formState.startingGift}
+                            onChange={handleInputChange}
+                        >
+                            <option value="Black Firebomb">Black Firebomb</option>
+                            <option value="Master Key">Master Key</option>
+                            <option value="Something else">Something else</option>
                         </select>
                     </div>
                     
@@ -66,18 +126,9 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                             <label className="flex items-center p-3 bg-element-light/30 rounded-lg border border-element-light/50 cursor-pointer hover:bg-element-light/50 transition-colors">
                                 <input 
                                     type="checkbox" 
-                                    name="useMasterKey" 
-                                    defaultChecked={currentPreferences?.useMasterKey ?? false}
-                                    className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
-                                />
-                                <span className="ml-3 text-text-secondary font-medium">Use Master Key</span>
-                            </label>
-
-                            <label className="flex items-center p-3 bg-element-light/30 rounded-lg border border-element-light/50 cursor-pointer hover:bg-element-light/50 transition-colors">
-                                <input 
-                                    type="checkbox" 
                                     name="readyToFarm" 
-                                    defaultChecked={currentPreferences?.readyToFarm ?? false}
+                                    checked={formState.readyToFarm}
+                                    onChange={handleInputChange}
                                     className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
                                 />
                                 <span className="ml-3 text-text-secondary font-medium">I'm okay with farming for weapons</span>
@@ -87,7 +138,8 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                                 <input 
                                     type="checkbox" 
                                     name="allowNotGuaranteed" 
-                                    defaultChecked={currentPreferences?.allowNotGuaranteed ?? false}
+                                    checked={formState.allowNotGuaranteed}
+                                    onChange={handleInputChange}
                                     className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
                                 />
                                 <span className="ml-3 text-text-secondary font-medium">Allow unguaranteed weapons</span>
@@ -97,7 +149,8 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                                 <input 
                                     type="checkbox" 
                                     name="allowRanged" 
-                                    defaultChecked={currentPreferences?.allowRanged ?? true}
+                                    checked={formState.allowRanged}
+                                    onChange={handleInputChange}
                                     className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
                                 />
                                 <span className="ml-3 text-text-secondary font-medium">Allow Ranged Weapons</span>
@@ -107,7 +160,8 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                                 <input 
                                     type="checkbox" 
                                     name="allowPyromancy" 
-                                    defaultChecked={currentPreferences?.allowPyromancy ?? true}
+                                    checked={formState.allowPyromancy}
+                                    onChange={handleInputChange}
                                     className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
                                 />
                                 <span className="ml-3 text-text-secondary font-medium">Allow Pyromancy Flame</span>
@@ -117,7 +171,8 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                                 <input 
                                     type="checkbox" 
                                     name="allowCatalysts" 
-                                    defaultChecked={currentPreferences?.allowCatalysts ?? true}
+                                    checked={formState.allowCatalysts}
+                                    onChange={handleInputChange}
                                     className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
                                 />
                                 <span className="ml-3 text-text-secondary font-medium">Allow Catalysts</span>
@@ -127,7 +182,8 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                                 <input 
                                     type="checkbox" 
                                     name="allowTalismans" 
-                                    defaultChecked={currentPreferences?.allowTalismans ?? false}
+                                    checked={formState.allowTalismans}
+                                    onChange={handleInputChange}
                                     className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
                                 />
                                 <span className="ml-3 text-text-secondary font-medium">Allow Talismans</span>
@@ -137,21 +193,25 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                                 <input 
                                     type="checkbox" 
                                     name="allowConsumables" 
-                                    defaultChecked={currentPreferences?.allowConsumables ?? true}
+                                    checked={formState.allowConsumables}
+                                    onChange={handleInputChange}
                                     className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
                                 />
                                 <span className="ml-3 text-text-secondary font-medium">Allow Consumables</span>
                             </label>
 
-                            <label className="flex items-center p-3 bg-element-light/30 rounded-lg border border-element-light/50 cursor-pointer hover:bg-element-light/50 transition-colors">
-                                <input 
-                                    type="checkbox" 
-                                    name="allowBlackKnightWeapons" 
-                                    defaultChecked={currentPreferences?.allowBlackKnightWeapons ?? false}
-                                    className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
-                                />
-                                <span className="ml-3 text-text-secondary font-medium">Allow Black Knight Weapons</span>
-                            </label>
+                            {gameConfig?.features?.blackKnightWeapons && (
+                                <label className="flex items-center p-3 bg-element-light/30 rounded-lg border border-element-light/50 cursor-pointer hover:bg-element-light/50 transition-colors">
+                                    <input 
+                                        type="checkbox" 
+                                        name="allowBlackKnightWeapons" 
+                                        checked={formState.allowBlackKnightWeapons}
+                                        onChange={handleInputChange}
+                                        className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
+                                    />
+                                    <span className="ml-3 text-text-secondary font-medium">Allow Black Knight Weapons</span>
+                                </label>
+                            )}
                         </div>
                     </div>
                     

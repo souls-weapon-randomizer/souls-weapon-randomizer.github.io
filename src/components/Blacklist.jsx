@@ -38,7 +38,14 @@ export default function Blacklist({ blacklist, addToBlacklist, removeFromBlackli
                                             src={weapon.img} 
                                             alt={weapon.name}
                                             className="w-8 h-8 object-contain"
+                                            onError={(e) => {
+                                                e.target.style.display = 'none';
+                                                e.target.nextSibling.style.display = 'flex';
+                                            }}
                                         />
+                                        <div className="w-8 h-8 object-contain items-center justify-center bg-element-light/20 rounded hidden">
+                                            <span className="text-text-muted text-xs">⚔️</span>
+                                        </div>
                                         <span className="text-text-secondary text-sm font-bold">{weapon.name}</span>
                                     </div>
                                     <button 
