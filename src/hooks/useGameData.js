@@ -56,13 +56,39 @@ export function useGameData(gameId) {
         const filtered = weaponsToFilter.filter(weapon => {
             // Filter blacklisted weapons
             if (blacklist.some(w => w.name === weapon.name)) return false;
+
+            // Check weapon type preferences
+            if (weapon.type === 'Bow' || weapon.type === 'Crossbow' || weapon.type === 'Greatbow') {
+                if (!preferences.allowRanged) return false;
+            }
             
-            // Special case: Black Firebomb is always available when selected as starting gift
+            if (weapon.type === 'Pyromancy Flame') {
+                if (!preferences.allowPyromancy) return false;
+            }
+            
+            if (weapon.type === 'Catalyst') {
+                if (!preferences.allowCatalysts) return false;
+            }
+            
+            if (weapon.type === 'Talisman') {
+                if (!preferences.allowTalismans) return false;
+            }
+            
+            if (weapon.type === 'Consumable') {
+                if (!preferences.allowConsumables) return false;
+            }
+
+            // Special case: Black Firebomb is available when selected as starting gift
             if (weapon.name === 'Black Firebomb' && preferences.startingGift === 'Black Firebomb') {
                 return true;
             }
             
-            // Check boss requirements using new merged format
+            // Special case: Starting weapons are always available for the selected starting class
+            if (weapon.starting_classes && weapon.starting_classes.includes(preferences.startingClass)) {
+                return true;
+            }
+            
+            // Check boss requirements
             if (!weapon.required_bosses || weapon.required_bosses.length === 0) return true;
             
             // Find a valid requirement that matches current preferences

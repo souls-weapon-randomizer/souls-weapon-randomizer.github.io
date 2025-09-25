@@ -89,6 +89,27 @@ const GamePage = () => {
             const newlyUnlocked = gameConfig.weapons.filter(weapon => {
                 if (blacklist.some(w => w.name === weapon.name)) return false;
                 
+                // Check weapon type preferences
+                if (weapon.type === 'Bow' || weapon.type === 'Crossbow' || weapon.type === 'Greatbow') {
+                    if (!preferences.allowRanged) return false;
+                }
+                
+                if (weapon.type === 'Pyromancy Flame') {
+                    if (!preferences.allowPyromancy) return false;
+                }
+                
+                if (weapon.type === 'Catalyst') {
+                    if (!preferences.allowCatalysts) return false;
+                }
+                
+                if (weapon.type === 'Talisman') {
+                    if (!preferences.allowTalismans) return false;
+                }
+                
+                if (weapon.type === 'Consumable') {
+                    if (!preferences.allowConsumables) return false;
+                }
+                
                 // Check boss requirements using new merged format
                 if (!weapon.required_bosses || weapon.required_bosses.length === 0) return true;
                 
