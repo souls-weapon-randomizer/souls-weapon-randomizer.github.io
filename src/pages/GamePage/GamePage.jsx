@@ -198,13 +198,12 @@ const GamePage = () => {
                 <header className="glass-effect border-b border-element-light/30 p-6 text-center sticky top-0 z-20 shadow-lg">
                     <div className="flex items-center justify-between">
                         <div className="flex-1">
-                            <button 
+                            <img 
+                                src="/logo.svg" 
+                                alt="Souls Weapon Randomizer" 
+                                className="w-12 h-12 cursor-pointer hover:scale-105 transition-transform duration-200"
                                 onClick={() => navigate('/')}
-                                className="button-secondary flex items-center gap-2 text-base px-4 py-2"
-                            >
-                                <span className="cursor-default">🏠</span>
-                                <span>Home</span>
-                            </button>
+                            />
                         </div>
                         <div className="flex-1 text-center">
                             <h1 className="text-4xl font-gothic font-bold tracking-wider text-gradient animate-fade-in">

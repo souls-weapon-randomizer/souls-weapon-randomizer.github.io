@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="30" fill="#2d2d2d" stroke="#d4af37" stroke-width="2"/>
+  
+  <!-- Simple sword -->
+  <path d="M32 12 L32 52 M28 16 L36 16 M28 20 L36 20" 
+        stroke="#d4af37" stroke-width="4" stroke-linecap="round" fill="none"/>
+  
+  <!-- Sword guard -->
+  <rect x="26" y="24" width="12" height="4" fill="#d4af37"/>
+  
+  <!-- Sword pommel -->
+  <circle cx="32" cy="56" r="3" fill="#d4af37"/>
+</svg>
