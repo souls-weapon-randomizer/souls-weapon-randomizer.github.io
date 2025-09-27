@@ -118,7 +118,7 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                                     onChange={handleInputChange}
                                     className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
                                 />
-                                <span className="ml-3 text-text-secondary font-medium">I'm okay with farming for weapons</span>
+                                <span className="ml-3 text-text-secondary font-medium">OK with farming for weapons</span>
                             </label>
                             
                             <label className="flex items-center p-3 bg-element-light/30 rounded-lg border border-element-light/50 cursor-pointer hover:bg-element-light/50 transition-colors">
@@ -140,7 +140,7 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                                     onChange={handleInputChange}
                                     className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
                                 />
-                                <span className="ml-3 text-text-secondary font-medium">Allow Ranged Weapons</span>
+                                <span className="ml-3 text-text-secondary font-medium">Allow Ranged weapons</span>
                             </label>
                             
                             <label className="flex items-center p-3 bg-element-light/30 rounded-lg border border-element-light/50 cursor-pointer hover:bg-element-light/50 transition-colors">
@@ -195,7 +195,7 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                                     onChange={handleInputChange}
                                     className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
                                 />
-                                <span className="ml-3 text-text-secondary font-medium">Allow Black Knight Weapons</span>
+                                <span className="ml-3 text-text-secondary font-medium">Allow Black Knight weapons</span>
                             </label>
                         </div>
                     </div>

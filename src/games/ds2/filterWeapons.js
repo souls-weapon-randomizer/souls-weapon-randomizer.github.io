@@ -1,6 +1,6 @@
 // DS2-specific weapon filtering logic
 export function filterWeapons(weapon, preferences, defeatedBosses) {
-    // Check weapon type preferences - DS2 specific types
+    // Check weapon type preferences
     if (weapon.type === 'Bow' || weapon.type === 'Crossbow' || weapon.type === 'Greatbow') {
         if (!preferences.allowRanged) return false;
     }
@@ -20,10 +20,6 @@ export function filterWeapons(weapon, preferences, defeatedBosses) {
     if (weapon.type === 'Consumable') {
         if (!preferences.allowConsumables) return false;
     }
-
-    // Check DS2-specific weapon flags
-    if (weapon.crows_only && !preferences.allowCrowsOnly) return false;
-    if (weapon.bonfire_ascetic_required && !preferences.allowBonfireAscetic) return false;
     
     // Special case: Starting weapons are always available for the selected starting class
     if (weapon.starting_classes && weapon.starting_classes.includes(preferences.startingClass)) {
@@ -38,6 +34,14 @@ export function filterWeapons(weapon, preferences, defeatedBosses) {
         // Check farmable preference: if weapon requires farming, user must have it enabled
         // If weapon doesn't require farming, it's always available
         if (req.farmable_only && !preferences.readyToFarm) return false;
+
+        // Check crows only preference: if weapon requires crows only, user must have it enabled
+        // If weapon doesn't require crows only, it's always available
+        if (req.crows_only && !preferences.allowCrowsTrade) return false;
+
+        // Check bonfire ascetic preference: if weapon requires bonfire ascetic, user must have it enabled
+        // If weapon doesn't require bonfire ascetic, it's always available
+        if (req.bonfire_ascetic_required && !preferences.allowBonfireAscetic) return false;
         
         // Check if all required bosses are defeated
         if (!req.bosses || req.bosses.length === 0) return true;

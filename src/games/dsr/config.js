@@ -10,19 +10,13 @@ export const DSR_CONFIG = {
     description: 'Embark on your randomized journey through Lordran',
     icon: '🔥',
     color: '#FF8C00', // Orange theme
+    backgroundImage: '/dsr_landing.jpg',
     
     // Game data
     weapons: allWeapons,
     allBosses: allBosses,
     startingClasses: startingClasses,
     isDlcBoss: isDlcBoss,
-    
-    // Game-specific settings
-    settings: {
-        allowBlackKnightWeapons: true,
-        useMasterKey: true,
-        readyToFarm: false
-    },
     
     // Default preferences
     defaultPreferences: {
@@ -47,16 +41,6 @@ export const DSR_CONFIG = {
         CURRENT_PAGE: 'dsr_current_page'
     },
     
-    // Game-specific features
-    features: {
-        masterKey: true,
-        blackKnightWeapons: true,
-        farming: true,
-        crowsOnly: false,
-        bonfireAscetic: false,
-        notGuaranteed: true,
-        startingGift: true
-    },
     
     // Game-specific components and functions
     Preferences,

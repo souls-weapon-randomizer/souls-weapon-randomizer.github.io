@@ -3216,5 +3216,139 @@ export const allWeapons = [
         "required_bosses": [
             {"bosses": ["Sir Alonne", "Guardian Dragon"], "farmable_only": false}
         ]
-    }
+    },
+    {
+        "name": "Throwing Knife",
+        "locations": [
+            "Sold by Merchant Hag Melentia for 100 souls."
+        ],
+        "img": "/ds2_weapon_images/Throwing_Knife.png",
+        "type": "Consumable",
+        "wiki_url": "https://darksouls2.wiki.fextralife.com/Throwing+Knife",
+        "required_bosses": [
+            {"bosses": [], "farmable_only": false}
+        ]
+    },
+    {
+        "name": "Poison Throwing Knife",
+        "locations": [
+            "Rare drop from claw-wielding Manikins in Earthen Peak.",
+            "Drop from Abandoned Hollows in the Gutter.",
+            "Sold by Lonesome Gavlan for 350 souls each. (20 only each encounter, then an unlimited supply in Doors of Pharros.)",
+            "Fifteen in a chest to the right of the gate to Velstadt, the Royal Aegis' arena in Undead Crypt.",
+            "20 on a corpse in Dragon's Sanctum in the area leading to Flynn's Ring."
+        ],
+        "img": "/ds2_weapon_images/Poison_Throwing_Knife.png",
+        "type": "Consumable",
+        "wiki_url": "https://darksouls2.wiki.fextralife.com/Poison+Throwing+Knife",
+        "required_bosses": [
+            {"bosses": [], "farmable_only": true},
+            {"bosses": ["Scorpioness Najka"], "farmable_only": false}
+        ]
+    },
+    {
+        "name": "Lacerating Knife",
+        "locations": [
+            "5 can be found at the bottom of the elevator at Sinners' Rise.",
+            "Sold by Laddersmith Gilligan (350 souls, unlimited)."
+        ],
+        "img": "/ds2_weapon_images/Lacerating_Knife.png",
+        "type": "Consumable",
+        "wiki_url": "https://darksouls2.wiki.fextralife.com/Lacerating+Knife",
+        "required_bosses": [
+            {"bosses": ["Covetous Demon"], "farmable_only": false}
+        ]
+    },
+    {
+        "name": "Firebomb",
+        "locations": [
+            "Sold by Merchant Hag Melentia for 200 souls.",
+            "Drops from Hollow Royal Soldiers (the ones that attack you with firebombs)."
+        ],
+        "img": "/ds2_weapon_images/Firebomb.png",
+        "type": "Consumable",
+        "wiki_url": "https://darksouls2.wiki.fextralife.com/Firebomb",
+        "required_bosses": [
+            {"bosses": [], "farmable_only": false}
+        ]
+    },
+    {
+        "name": "Black Firebomb",
+        "locations": [
+            "Available as map treasure in Undead Crypt, The Gutter, Earthen Peak, Forest of Fallen Giants.",
+            "Sold by Magerold of Lanafir in Iron Keep."
+        ],
+        "img": "/ds2_weapon_images/Black_Firebomb.png",
+        "type": "Consumable",
+        "wiki_url": "https://darksouls2.wiki.fextralife.com/Black+Firebomb",
+        "required_bosses": [
+            {"bosses": ["Mytha, the Baneful Queen"], "farmable_only": false}
+        ]
+    },
+    {
+        "name": "Witching Urn",
+        "locations": [
+            "Sold by Merchant Hag Melentia for 400 souls (unlimited stock)."
+        ],
+        "img": "/ds2_weapon_images/Witching_Urn.png",
+        "type": "Consumable",
+        "wiki_url": "https://darksouls2.wiki.fextralife.com/Witching+Urn",
+        "required_bosses": [
+            {"bosses": [], "farmable_only": false}
+        ]
+    },
+    {
+        "name": "Lightning Urn",
+        "locations": [
+            "Sold by Head of Vengarl for 400 souls (unlimited stock)."
+        ],
+        "img": "/ds2_weapon_images/Lightning_Urn.png",
+        "type": "Consumable",
+        "wiki_url": "https://darksouls2.wiki.fextralife.com/Lightning+Urn",
+        "required_bosses": [
+            {"bosses": [], "farmable_only": false}
+        ]
+    },
+    {
+        "name": "Hexing Urn",
+        "locations": [
+            "Sold by Titchy Gren for 350 souls.",
+            "10 can be found just before the second bonfire in Harvest Valley, in the area with the two Mounted Beasts. Climb the first ladder as you are coming from the first bonfire."
+        ],
+        "img": "/ds2_weapon_images/Hexing_Urn.png",
+        "type": "Consumable",
+        "wiki_url": "https://darksouls2.wiki.fextralife.com/Hexing+Urn",
+        "required_bosses": [
+            {"bosses": ["Executioner's Chariot"], "farmable_only": false}
+        ]
+    },
+    {
+        "name": "Dung Pie",
+        "locations": [
+            "Sold by the Rat King for 600 souls."
+        ],
+        "img": "/ds2_weapon_images/Dung_Pie.png",
+        "type": "Consumable",
+        "wiki_url": "https://darksouls2.wiki.fextralife.com/Dung+Pie",
+        "required_bosses": [
+            {"bosses": ["Royal Rat Vanguard"], "farmable_only": false},
+            {"bosses": ["Royal Rat Authority"], "farmable_only": false}
+        ]
+    },
+    {
+        "name": "Holy Water Urn",
+        "locations": [
+            "Sold by Blue Sentinel Targray in the Cathedral of Blue for 300 souls each.",
+            "Three are found in the well at the Royal Army Campsite, located in Brightstone Cove Tseldora.",
+            "Dropped by the Archdrake Priestesses in the Shrine Of Amana.",
+            "5 on a corpse in the spiked ground area in Dragon's Sanctum."
+        ],
+        "img": "/ds2_weapon_images/Holy_Water_Urn.png",
+        "type": "Consumable",
+        "wiki_url": "https://darksouls2.wiki.fextralife.com/Holy+Water+Urn",
+        "required_bosses": [
+            {"bosses": ["Looking Glass Knight"], "farmable_only": true},
+            {"bosses": ["Old Dragonslayer"], "farmable_only": false}
+        ]
+    },
 ];

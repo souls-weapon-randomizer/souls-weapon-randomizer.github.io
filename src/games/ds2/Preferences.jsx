@@ -13,8 +13,8 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
         allowCatalysts: currentPreferences?.allowCatalysts || false,
         allowTalismans: currentPreferences?.allowTalismans || false,
         allowConsumables: currentPreferences?.allowConsumables || false,
-        allowCrowsOnly: currentPreferences?.allowCrowsOnly || true,
-        allowBonfireAscetic: currentPreferences?.allowBonfireAscetic || true,
+        allowCrowsTrade: currentPreferences?.allowCrowsTrade || false,
+        allowBonfireAscetic: currentPreferences?.allowBonfireAscetic || false,
     });
 
     // Only initialize form state once when component first mounts
@@ -28,8 +28,8 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                 allowCatalysts: currentPreferences.allowCatalysts || false,
                 allowTalismans: currentPreferences.allowTalismans || false,
                 allowConsumables: currentPreferences.allowConsumables || false,
-                allowCrowsOnly: currentPreferences.allowCrowsOnly || true,
-                allowBonfireAscetic: currentPreferences.allowBonfireAscetic || true,
+                allowCrowsTrade: currentPreferences.allowCrowsTrade || false,
+                allowBonfireAscetic: currentPreferences.allowBonfireAscetic || false,
             });
             setIsInitialized(true);
         }
@@ -98,7 +98,7 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                                     onChange={handleInputChange}
                                     className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
                                 />
-                                <span className="ml-3 text-text-secondary font-medium">I'm okay with farming for weapons</span>
+                                <span className="ml-3 text-text-secondary font-medium">OK with farming for weapons</span>
                             </label>
                             
                             <label className="flex items-center p-3 bg-element-light/30 rounded-lg border border-element-light/50 cursor-pointer hover:bg-element-light/50 transition-colors">
@@ -109,7 +109,7 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                                     onChange={handleInputChange}
                                     className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
                                 />
-                                <span className="ml-3 text-text-secondary font-medium">Allow Ranged Weapons</span>
+                                <span className="ml-3 text-text-secondary font-medium">Allow Ranged weapons</span>
                             </label>
                             
                             <label className="flex items-center p-3 bg-element-light/30 rounded-lg border border-element-light/50 cursor-pointer hover:bg-element-light/50 transition-colors">
@@ -159,12 +159,12 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                             <label className="flex items-center p-3 bg-element-light/30 rounded-lg border border-element-light/50 cursor-pointer hover:bg-element-light/50 transition-colors">
                                 <input 
                                     type="checkbox" 
-                                    name="allowCrowsOnly" 
-                                    checked={formState.allowCrowsOnly}
+                                    name="allowCrowsTrade" 
+                                    checked={formState.allowCrowsTrade}
                                     onChange={handleInputChange}
                                     className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
                                 />
-                                <span className="ml-3 text-text-secondary font-medium">Allow weapons from the Crows</span>
+                                <span className="ml-3 text-text-secondary font-medium">Allow Crows trade</span>
                             </label>
 
                             <label className="flex items-center p-3 bg-element-light/30 rounded-lg border border-element-light/50 cursor-pointer hover:bg-element-light/50 transition-colors">
@@ -175,7 +175,7 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                                     onChange={handleInputChange}
                                     className="h-5 w-5 bg-element-light border-element-light rounded text-accent focus:ring-accent focus:ring-2" 
                                 />
-                                <span className="ml-3 text-text-secondary font-medium">I'm okay with Bonfire Ascetic</span>
+                                <span className="ml-3 text-text-secondary font-medium">OK with Bonfire Ascetic</span>
                             </label>
                         </div>
                     </div>
