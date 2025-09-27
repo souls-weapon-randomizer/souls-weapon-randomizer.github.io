@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import WeaponDisplay from './WeaponDisplay';
 import BossSelectionModal from './BossSelectionModal';
 import CustomWheel from './CustomWheel';
+import { trackWeaponRandomized } from '../config/analytics';
 
 // Enhanced color palette with more vibrant and pleasant colors
 const richWarmWheelColors = [
@@ -63,8 +64,11 @@ export default function Roulette({ activeWeapons, randomizedWeapon, setRandomize
             mustSpinRef.current = false;
             setMustSpin(false);
             setRandomizedWeapon(activeWeapons[winningIndex]);
+            
+            // Track weapon randomization
+            trackWeaponRandomized(gameConfig.name, activeWeapons[winningIndex].name);
         }
-    }, [activeWeapons]);
+    }, [activeWeapons, gameConfig]);
 
     const handleBossSelection = () => {
         if (selectedBoss) {

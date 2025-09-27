@@ -65,12 +65,12 @@ const HomePage = () => {
             <main className="p-6 sm:p-8 max-w-6xl mx-auto flex-1">
                 {/* Game Selection */}
                 <section className="mb-12">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="flex flex-wrap justify-center gap-6">
                         {games.map(game => (
                             <div
                                 key={game.id}
                                 onClick={() => handleGameClick(game.id)}
-                                className="group cursor-pointer rounded-xl p-12 text-center transition-all duration-167 ease-out hover:scale-105 hover:shadow-lg hover:shadow-accent/20 border border-element-light/30 hover:border-accent/50 relative overflow-hidden min-h-[200px] flex items-center justify-center"
+                                className="group cursor-pointer rounded-xl p-12 text-center transition-all duration-167 ease-out hover:scale-105 hover:shadow-lg hover:shadow-accent/20 border border-element-light/30 hover:border-accent/50 relative overflow-hidden min-h-[200px] w-80 flex items-center justify-center"
                                 onMouseEnter={(e) => {
                                     handleGameHover(game.id);
                                     const backgroundElement = e.currentTarget.querySelector('.background-zoom');

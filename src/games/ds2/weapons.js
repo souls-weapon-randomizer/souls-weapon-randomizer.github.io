@@ -474,7 +474,7 @@ export const allWeapons = [
         "type": "Greatsword",
         "wiki_url": "https://darksouls2.wiki.fextralife.com/Drangleic+Sword",
         "required_bosses": [
-            {"bosses": ["Pursuer"], "farmable_only": false}
+            {"bosses": ["The Pursuer"], "farmable_only": false}
         ]
     },
     {
@@ -1763,9 +1763,7 @@ export const allWeapons = [
         "type": "Great Hammer",
         "wiki_url": "https://darksouls2.wiki.fextralife.com/Demon's+Great+Hammer",
         "required_bosses": [
-            {"bosses": [], "crows_only": true},
-            {"bosses": ["The Skeleton Lords"], "farmable_only": true},
-            {"bosses": ["Prowling Magus and Congregation"], "farmable_only": true}
+            {"bosses": [], "crows_only": true}
         ]
     },
     {
@@ -2059,9 +2057,7 @@ export const allWeapons = [
         "type": "Spear",
         "wiki_url": "https://darksouls2.wiki.fextralife.com/Channeler's+Trident",
         "required_bosses": [
-            {"bosses": [], "crows_only": true},
-            {"bosses": ["The Skeleton Lords"], "farmable_only": true},
-            {"bosses": ["Prowling Magus and Congregation"], "farmable_only": true}
+            {"bosses": [], "crows_only": true}
         ]
     },
     {
@@ -2617,9 +2613,7 @@ export const allWeapons = [
         "type": "Whip",
         "wiki_url": "https://darksouls2.wiki.fextralife.com/Old+Whip",
         "required_bosses": [
-            {"bosses": [], "crows_only": true},
-            {"bosses": ["The Skeleton Lords"], "farmable_only": true},
-            {"bosses": ["Prowling Magus and Congregation"], "farmable_only": true}
+            {"bosses": [], "crows_only": true}
         ]
     },
     {

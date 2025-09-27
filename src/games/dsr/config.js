@@ -1,5 +1,7 @@
 import { allWeapons } from './weapons.js';
-import { allBosses, startingClasses, isDlcBoss } from './bosses.js';
+import { allBosses } from './bosses.js';
+import { startingClasses } from './classes.js';
+import { isDlcBoss } from './dlc.js';
 import Preferences from './Preferences.jsx';
 import { filterWeapons } from './filterWeapons.js';
 
@@ -25,11 +27,11 @@ export const DSR_CONFIG = {
         useMasterKey: false,
         readyToFarm: false,
         allowNotGuaranteed: false,
-        allowPyromancy: false,
-        allowCatalysts: false,
+        allowPyromancy: true,
+        allowCatalysts: true,
         allowTalismans: false,
-        allowRanged: false,
-        allowConsumables: false
+        allowRanged: true,
+        allowConsumables: true
     },
     
     // Storage keys

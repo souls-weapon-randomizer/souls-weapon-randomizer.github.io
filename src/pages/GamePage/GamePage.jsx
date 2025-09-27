@@ -7,6 +7,7 @@ import Bosses from '../../components/Bosses';
 import Roulette from '../../components/Roulette';
 import Blacklist from '../../components/Blacklist';
 import notificationManager, { NOTIFICATION_TYPES } from '../../components/NotificationManager';
+import { trackGameStart, trackBossDefeated, trackWeaponRandomized, trackWeaponBlacklisted, trackNewGame } from '../../config/analytics';
 
 // Clean background without particles
 const BackgroundPattern = () => (
@@ -76,6 +77,9 @@ const GamePage = () => {
         setPreferences(newPreferences);
         setCurrentPage('roulette');
         setShowPreferences(false);
+        
+        // Track game start (first time preferences are saved)
+        trackGameStart(gameConfig.name);
     };
     
     const addDefeatedBoss = (bossName) => {
@@ -84,26 +88,39 @@ const GamePage = () => {
             return [...prev, bossName];
         });
         
+        // Track boss defeat
+        trackBossDefeated(gameConfig.name, bossName);
+        
         // Check if any new weapons are unlocked
         setTimeout(() => {
-            const newlyUnlocked = gameConfig.weapons.filter(weapon => {
+            // Get weapons available BEFORE defeating the boss
+            const weaponsBefore = gameConfig.weapons.filter(weapon => {
                 if (blacklist.some(w => w.name === weapon.name)) return false;
-                
-                // Use game-specific filter function with updated defeated bosses
+                return gameConfig.filterWeapons(weapon, preferences, defeatedBosses);
+            });
+            
+            // Get weapons available AFTER defeating the boss
+            const weaponsAfter = gameConfig.weapons.filter(weapon => {
+                if (blacklist.some(w => w.name === weapon.name)) return false;
                 return gameConfig.filterWeapons(weapon, preferences, [...defeatedBosses, bossName]);
             });
+            
+            // Calculate newly unlocked weapons
+            const newlyUnlocked = weaponsAfter.filter(weapon => 
+                !weaponsBefore.some(w => w.name === weapon.name)
+            );
             
             if (newlyUnlocked.length > 0) {
                 notificationManager.show({
                     message: `Boss defeated! ${newlyUnlocked.length} new weapon(s) unlocked!`,
                     type: NOTIFICATION_TYPES.SUCCESS,
-                    duration: 4000
+                    duration: 2000
                 });
             } else {
                 notificationManager.show({
-                    message: `Boss defeated! Weapon blacklisted. No new weapons unlocked.`,
+                    message: `Boss defeated! No new weapons unlocked.`,
                     type: NOTIFICATION_TYPES.SUCCESS,
-                    duration: 4000
+                    duration: 2000
                 });
             }
         }, 100);
@@ -111,10 +128,15 @@ const GamePage = () => {
     
     const removeDefeatedBoss = (bossName) => setDefeatedBosses(prev => prev.filter(boss => boss !== bossName));
     
-    const addToBlacklist = (weapon) => setBlacklist(prev => {
-        if (prev.some(w => w.name === weapon.name)) return prev;
-        return [...prev, weapon];
-    });
+    const addToBlacklist = (weapon) => {
+        setBlacklist(prev => {
+            if (prev.some(w => w.name === weapon.name)) return prev;
+            return [...prev, weapon];
+        });
+        
+        // Track weapon blacklisted
+        trackWeaponBlacklisted(gameConfig.name, weapon.name);
+    };
     
     const removeFromBlacklist = (weapon) => setBlacklist(prev => prev.filter(w => w.name !== weapon.name));
     
@@ -126,6 +148,9 @@ const GamePage = () => {
         setCurrentPage('preferences');
         setShowNewGameConfirm(false);
         setShowPreferences(true);
+        
+        // Track new game
+        trackNewGame(gameConfig.name);
         
         notificationManager.show({
             message: `New ${gameConfig.name} game started!`,
@@ -184,7 +209,7 @@ const GamePage = () => {
                     </div>
                 </header>
 
-                {!showPreferences ? (
+                {!showPreferences && (
                     <main className="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-9 gap-10 max-w-8xl mx-auto animate-slide-up min-h-[calc(100vh-120px)]">
                         {/* Enhanced left sidebar - First on mobile, left on desktop */}
                         <aside className="lg:col-span-2 space-y-8 order-2 lg:order-1">
@@ -225,23 +250,6 @@ const GamePage = () => {
                             </div>
                         </aside>
                     </main>
-                ) : (
-                    // Fallback content for debugging
-                    <div className="p-6 text-center">
-                        <div className="glass-effect rounded-xl p-8 max-w-md mx-auto">
-                            <h2 className="text-2xl font-bold text-text-main mb-4">Loading...</h2>
-                            <p className="text-text-muted">If you see this message, there might be an issue with the app initialization.</p>
-                            <button 
-                                onClick={() => {
-                                    setCurrentPage('roulette');
-                                    setShowPreferences(false);
-                                }}
-                                className="button-primary mt-4"
-                            >
-                                Go to Roulette
-                            </button>
-                        </div>
-                    </div>
                 )}
 
                 {/* New Game Confirmation Modal */}
@@ -260,12 +268,11 @@ const GamePage = () => {
                                         onClick={cancelNewGame}
                                         className="button-secondary px-6 py-3 flex items-center gap-2"
                                     >
-                                        <span className="cursor-default">❌</span>
                                         <span>Cancel</span>
                                     </button>
                                     <button
                                         onClick={clearSession}
-                                        className="button-primary px-6 py-3 flex items-center gap-2 bg-orange-600 hover:bg-orange-700 border-orange-500"
+                                        className="px-6 py-3 flex items-center gap-2 bg-red-600 hover:bg-red-700 border border-red-500 text-white font-semibold rounded-lg shadow-lg hover:shadow-glow transition-all duration-300 transform hover:scale-105"
                                     >
                                         <span>Start New Game</span>
                                     </button>

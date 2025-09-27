@@ -29,7 +29,13 @@ export default function Bosses({ defeatedBosses, addDefeatedBoss, removeDefeated
                                 <div key={boss} className={`flex items-center justify-between p-2 rounded border border-element-light/90 shadow-xl ${index % 2 === 0 ? 'bg-element/80' : 'bg-element-light/60'}`}>
                                     <div className="flex items-center gap-2">
                                         <span className="text-accent cursor-default">✓</span>
-                                        <span className={`text-sm font-bold ${gameConfig?.isDlcBoss?.(boss) ? 'text-blue-400' : 'text-text-secondary'}`}>
+                                        <span className={`text-sm font-bold ${
+                                            gameConfig?.isDlc1Boss?.(boss) ? 'text-green-400' : // Crown of the Sunken King - Green
+                                            gameConfig?.isDlc2Boss?.(boss) ? 'text-red-400' : // Crown of the Old Iron King - Red
+                                            gameConfig?.isDlc3Boss?.(boss) ? 'text-cyan-400' : // Crown of the Ivory King - Light Blue
+                                            gameConfig?.isDlcBoss?.(boss) ? 'text-blue-400' : // DSR DLC - Blue
+                                            'text-text-secondary'
+                                        }`}>
                                             {boss}
                                         </span>
                                     </div>
@@ -67,8 +73,14 @@ export default function Bosses({ defeatedBosses, addDefeatedBoss, removeDefeated
                         className="input-field w-full text-sm"
                     >
                         {availableBosses.map(boss => (
-                            <option key={boss} value={boss}>
-                                {gameConfig?.isDlcBoss?.(boss) ? `${boss} (DLC)` : boss}
+                            <option key={boss} value={boss} className={
+                                gameConfig?.isDlc1Boss?.(boss) ? 'text-green-400' : // Crown of the Sunken King - Green
+                                gameConfig?.isDlc2Boss?.(boss) ? 'text-red-400' : // Crown of the Old Iron King - Red
+                                gameConfig?.isDlc3Boss?.(boss) ? 'text-cyan-400' : // Crown of the Ivory King - Light Blue
+                                gameConfig?.isDlcBoss?.(boss) ? 'text-blue-400' : // DSR DLC - Blue
+                                ''
+                            }>
+                                {boss}
                             </option>
                         ))}
                     </select>

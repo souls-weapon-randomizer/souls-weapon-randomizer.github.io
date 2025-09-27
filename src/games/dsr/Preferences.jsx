@@ -18,9 +18,9 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
         allowNotGuaranteed: currentPreferences?.allowNotGuaranteed || false,
     });
 
-    // Only initialize form state once when component first mounts
+    // Initialize form state when component mounts or when preferences change
     useEffect(() => {
-        if (currentPreferences && !isInitialized) {
+        if (currentPreferences) {
             setFormState({
                 startingClass: currentPreferences.startingClass || gameConfig?.startingClasses?.[0] || 'Warrior',
                 startingGift: currentPreferences.startingGift || 'Black Firebomb',
@@ -35,7 +35,7 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
             });
             setIsInitialized(true);
         }
-    }, [currentPreferences, gameConfig, isInitialized]);
+    }, [currentPreferences, gameConfig]);
 
     const handleInputChange = (e) => {
         const { name, type, checked, value } = e.target;
@@ -213,7 +213,7 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                             <button
                                 type="button"
                                 onClick={onShowNewGameConfirmation}
-                                className="w-full text-lg py-4 flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 border border-orange-500 transition-all duration-300 transform hover:scale-105 font-semibold rounded-lg"
+                                className="w-full text-lg py-4 flex items-center justify-center gap-2 button-secondary transition-all duration-300 transform hover:scale-105"
                             >
                                 <span className="cursor-default">🎯</span>
                                 <span>New Game</span>

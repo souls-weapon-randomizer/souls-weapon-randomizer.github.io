@@ -17,14 +17,7 @@ const WeaponDisplay = ({ weapon, onReroll, onBossDefeated, onBlacklist }) => (
                     src={weapon.img} 
                     alt={weapon.name} 
                     className="max-h-full max-w-[250px] object-contain relative z-10 drop-shadow-2xl animate-bounce-gentle"
-                    onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'flex';
-                    }}
                 />
-                <div className="max-h-full max-w-[250px] object-contain relative z-10 drop-shadow-2xl animate-bounce-gentle items-center justify-center bg-element-light/20 rounded-lg hidden">
-                    <span className="text-text-muted text-2xl">⚔️</span>
-                </div>
             </div>
             
             <div className="text-center max-w-2xl">

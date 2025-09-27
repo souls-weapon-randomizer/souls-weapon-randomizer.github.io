@@ -1,10 +1,12 @@
 import { allWeapons } from './weapons.js';
-import { allBosses, startingClasses } from './bosses.js';
+import { allBosses } from './bosses.js';
+import { startingClasses } from './classes.js';
+import { isDlc1Boss, isDlc2Boss, isDlc3Boss } from './dlc.js';
 import Preferences from './Preferences.jsx';
 import { filterWeapons } from './filterWeapons.js';
 
-// DS2 doesn't have DLC bosses, so this always returns false
-const isDlcBoss = () => false;
+// DS2 DLC boss functions
+const isDlcBoss = (bossName) => isDlc1Boss(bossName) || isDlc2Boss(bossName) || isDlc3Boss(bossName);
 
 
 export const DS2_CONFIG = {
@@ -21,6 +23,9 @@ export const DS2_CONFIG = {
     allBosses: allBosses,
     startingClasses: startingClasses,
     isDlcBoss: isDlcBoss,
+    isDlc1Boss: isDlc1Boss,
+    isDlc2Boss: isDlc2Boss,
+    isDlc3Boss: isDlc3Boss,
     
     // Default preferences
     defaultPreferences: {

@@ -3,11 +3,15 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import HomePage from './pages/HomePage/HomePage';
 import GamePage from './pages/GamePage/GamePage';
 import { NotificationContainer } from './components/NotificationManager';
+import GoogleAnalytics from './components/GoogleAnalytics';
 
 function App() {
     return (
         <Router>
             <div className="App">
+                {/* Google Analytics tracking */}
+                <GoogleAnalytics />
+                
                 <Routes>
                     {/* Home page with game selection */}
                     <Route path="/" element={<HomePage />} />
