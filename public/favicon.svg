@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <clipPath id="circleClip">
+      <circle cx="16" cy="16" r="15"/>
+    </clipPath>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="16" cy="16" r="15" fill="#1a1a1a"/>
+  
+  <!-- Pommel (top) -->
+  <circle cx="16" cy="9" r="2.5" fill="#fbbf24"/>
+  
+  <!-- Pommel detail -->
+  <circle cx="16" cy="11.5" r="1.5" fill="#f59e0b"/>
+  <circle cx="16" cy="11.5" r="0.75" fill="#fbbf24"/>
+  
+  <!-- Sword hilt - main grip -->
+  <rect x="14" y="12" width="4" height="8" fill="#fbbf24" rx="0.5"/>
+  
+  <!-- Grip wrapping details -->
+  <rect x="14.5" y="13" width="3" height="6" fill="#f59e0b" rx="0.25"/>
+  <rect x="15" y="14" width="2" height="4" fill="#fbbf24" rx="0.125"/>
+  
+  <!-- Crossguard -->
+  <rect x="9" y="20" width="14" height="3" fill="#fbbf24" rx="1"/>
+  
+  <!-- Crossguard center -->
+  <rect x="14" y="20.5" width="4" height="2" fill="#f59e0b" rx="0.5"/>
+  
+  <!-- Sword blade (bottom) - clipped to circle -->
+  <rect x="14" y="23" width="4" height="12" fill="#d1d5db" rx="0.25" clip-path="url(#circleClip)"/>
+  
+  <!-- Outer circle border (on top) -->
+  <circle cx="16" cy="16" r="15" fill="none" stroke="#fbbf24" stroke-width="1"/>
+</svg>
