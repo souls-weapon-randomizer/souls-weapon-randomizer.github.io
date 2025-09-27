@@ -7,5 +7,10 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
+  },
+  // Handle SPA routing for GitHub Pages
+  preview: {
+    port: 4173,
+    strictPort: true,
   }
 })
