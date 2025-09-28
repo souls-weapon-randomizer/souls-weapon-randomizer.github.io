@@ -58,6 +58,7 @@ const GamePage = () => {
     // Local state
     const [showPreferences, setShowPreferences] = useState(false);
     const [showNewGameConfirm, setShowNewGameConfirm] = useState(false);
+    const [isNewGame, setIsNewGame] = useState(false);
     
     // Determine which page to show based on current page and preferences
     useEffect(() => {
@@ -68,8 +69,10 @@ const GamePage = () => {
         // 2. Current page is preferences
         if (!hasPreferences || currentPage === 'preferences') {
             setShowPreferences(true);
+            setIsNewGame(!hasPreferences); // Set isNewGame to true if no saved preferences
         } else {
             setShowPreferences(false);
+            setIsNewGame(false);
         }
     }, [currentPage, gameConfig.storageKeys.PREFERENCES]);
     
@@ -148,6 +151,7 @@ const GamePage = () => {
         setCurrentPage('preferences');
         setShowNewGameConfirm(false);
         setShowPreferences(true);
+        setIsNewGame(true); // Mark as new game
         
         // Track new game
         trackNewGame(gameConfig.name);
@@ -174,6 +178,7 @@ const GamePage = () => {
                     onClose={handleSavePreferences}
                     gameConfig={gameConfig}
                     isVisible={showPreferences}
+                    isNewGame={isNewGame}
                 />
 
                 <header className="glass-effect border-b border-element-light/30 p-6 text-center sticky top-0 z-20 shadow-lg">

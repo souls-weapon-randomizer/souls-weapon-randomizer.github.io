@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function Preferences({ setPreferences, onSave, currentPreferences, onShowNewGameConfirmation, onClose, gameConfig, isVisible }) {
+export default function Preferences({ setPreferences, onSave, currentPreferences, onShowNewGameConfirmation, onClose, gameConfig, isVisible, isNewGame }) {
     // Track if form has been initialized to prevent resetting after user interaction
     const [isInitialized, setIsInitialized] = useState(false);
     
@@ -206,7 +206,7 @@ export default function Preferences({ setPreferences, onSave, currentPreferences
                             className="button-primary w-full text-lg py-4 flex items-center justify-center gap-2"
                         >
                             <span className="cursor-default">🚀</span>
-                            <span>{currentPreferences ? 'Continue the Journey' : 'Begin the Journey'}</span>
+                            <span>{isNewGame ? 'Begin the Journey' : 'Continue the Journey'}</span>
                         </button>
                         
                         {currentPreferences && (
